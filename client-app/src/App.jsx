@@ -1,11 +1,13 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { CHECK_USER_STATUS } from "./store/reducer/user/userActionTypes";
+import { CHECK_SESSION_STATUS } from "./store/reducer/user/userActionTypes";
 import "./App.css";
 import { useEffect } from "react";
 import NoLoginLayout from "./layout/NoLoginLayout/NoLoginLayout";
 import ConsoleLayout from "./layout/ConsoleLayout/ConsoleLayout";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { Button } from "@mui/material";
+import { useNavigate } from "react-router";
 
 const theme = createTheme({
   palette: {
@@ -22,10 +24,14 @@ const theme = createTheme({
 const App = () => {
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch({
-      type: CHECK_USER_STATUS,
+      type: CHECK_SESSION_STATUS,
+      payload: {
+        onLoggedIn: () => navigate("/console"),
+      },
     });
   }, []);
 
