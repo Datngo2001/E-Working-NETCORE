@@ -51,9 +51,9 @@ namespace IdentityServer
                     AllowedGrantTypes = GrantTypes.Code,
                     RequireClientSecret = false,
 
-                    RedirectUris =           { "http://localhost:3000/callback" },
-                    PostLogoutRedirectUris = { "http://localhost:3000/" },
-                    AllowedCorsOrigins =     { "http://localhost:3000" },
+                    RedirectUris =           { "http://localhost:3001/callback" },
+                    PostLogoutRedirectUris = { "http://localhost:3001/" },
+                    AllowedCorsOrigins =     { "http://localhost:3001" },
 
                     AllowOfflineAccess = true,
 

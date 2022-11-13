@@ -43,18 +43,19 @@ var identityServerBuilder = builder.Services.AddIdentityServer(options =>
 identityServerBuilder.AddDeveloperSigningCredential();
 
 builder.Services.AddAuthentication()
-                .AddGoogle(options =>
-                {
-                    options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
-                    options.ClientId = builder.Configuration.GetValue<string>("GoogleOAuthClientID");
-                    options.ClientSecret = builder.Configuration.GetValue<string>("GoogleOAuthClientSecret");
-                });
+    .AddGoogle(options =>
+    {
+        options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+        options.ClientId = builder.Configuration.GetValue<string>("GoogleOAuthClientID");
+        options.ClientSecret = builder.Configuration.GetValue<string>("GoogleOAuthClientSecret");
+    });
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
+    app.UseDatabaseErrorPage();
     app.UseExceptionHandler("/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
