@@ -1,0 +1,17 @@
+.container{
+    position: relative;
+}
+.form-container{
+    width: 350px;
+    max-width: 90%;
+    margin: auto;
+    padding-top: 30px;
+}
+.form-container h1{
+    text-align: center;
+    margin-bottom: 20px;
+    color: #000 !important;
+}
+.form-container p{
+    margin-top: 10px;
+}

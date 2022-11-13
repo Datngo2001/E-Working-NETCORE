@@ -1,0 +1,9 @@
+.button-group {
+  display: contents;
+}
+.stage .button-group {
+  visibility: hidden;
+}
+.stage:hover .button-group {
+  visibility: visible;
+}

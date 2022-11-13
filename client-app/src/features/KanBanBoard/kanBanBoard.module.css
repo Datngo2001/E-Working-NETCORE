@@ -1,0 +1,12 @@
+.boards {
+  height: 100%;
+  width: fit-content;
+  padding: 10px 30px;
+  display: flex;
+  gap: 30px;
+}
+
+.add-button {
+  flex-basis: 290px;
+  min-width: 290px;
+}

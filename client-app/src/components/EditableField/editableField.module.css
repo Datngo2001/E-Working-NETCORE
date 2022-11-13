@@ -1,0 +1,28 @@
+.editable {
+  width: 100%;
+}
+
+.display:hover {
+  background-color: #ddd;
+}
+
+.edit {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.footer {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.footer .closeIcon {
+  cursor: pointer;
+  height: 24px;
+  width: 24px;
+}

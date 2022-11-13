@@ -1,0 +1,19 @@
+.navlink {
+    font-size: 1.3rem;
+    border-radius: 10px;
+    padding: 0px 10px;
+    text-decoration: none;
+    color: black;
+    line-height: 2;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.navlink:hover{
+    background-color: #e6f7ff;
+}
+
+.active{
+    color: #0052CC;
+    background-color: #e6f7ff;
+}

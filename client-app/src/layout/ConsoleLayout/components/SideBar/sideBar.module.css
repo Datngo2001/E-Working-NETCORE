@@ -1,0 +1,9 @@
+.container{
+    height: 100%;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    background-color: #FAFBFC;
+    border-right: 2px solid #E7E8E9;
+    padding: 10px;
+}
