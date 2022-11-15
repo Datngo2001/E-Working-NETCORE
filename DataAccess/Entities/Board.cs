@@ -9,7 +9,7 @@ namespace DataAccess.Entities
     {
         public Guid Id { get; set; }
         public Guid ProjectId { get; set; }
-        public Project Project { get; set; } = new Project();
+        public Project Project { get; set; }
         public List<Column> Columns { get; set; } = new List<Column>();
     }
 }
