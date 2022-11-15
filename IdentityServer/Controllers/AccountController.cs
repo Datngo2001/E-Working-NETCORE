@@ -181,7 +181,7 @@ namespace IndetityServer.Controllers
                     throw new Exception();
                 }
 
-                result = await userManager.AddToRoleAsync(newUser, "customer");
+                result = await userManager.AddToRoleAsync(newUser, "user");
                 if (!result.Succeeded)
                 {
                     foreach (var err in result.Errors)

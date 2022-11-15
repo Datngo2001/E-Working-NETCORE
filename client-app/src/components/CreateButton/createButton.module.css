@@ -1,0 +1,40 @@
+.container {
+  width: 100%;
+  position: relative;
+}
+
+.button {
+  position: absolute;
+  padding: 6px 12px;
+  border-radius: 3px;
+  background-color: #eee;
+  color: #000;
+  cursor: pointer;
+  width: fit-content;
+  transition: 200ms;
+}
+
+.display:hover {
+  background-color: #ddd;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.footer {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.footer .closeIcon {
+  cursor: pointer;
+  height: 24px;
+  width: 24px;
+}

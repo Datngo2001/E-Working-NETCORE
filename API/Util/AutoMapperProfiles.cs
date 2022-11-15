@@ -1,6 +1,7 @@
 
 using DataAccess.Entities;
 using AutoMapper;
+using CommonModel.Project;
 
 namespace API.Util
 {
@@ -8,6 +9,10 @@ namespace API.Util
     {
         public AutoMapperProfiles()
         {
+            // Project
+            CreateMap<Project, ProjectDto>();
+            CreateMap<CreateProjectDto, Project>();
+            CreateMap<AppUser, MemberDto>();
         }
     }
 }

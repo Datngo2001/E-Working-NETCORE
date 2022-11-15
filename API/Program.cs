@@ -1,10 +1,11 @@
 using DataAccess;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using DataAccess.Entities;
 using API.Util;
+using API.Repositories;
+using API.Interfaces;
+using API.Extensions.ServiceCollection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,28 +17,9 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwagger();
+builder.Services.AddAuthenticationRegister(builder.Configuration.GetValue<string>("Authority"));
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
-
-// builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
-//     .AddEntityFrameworkStores<ApiDbContext>();
-
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-    .AddJwtBearer(options =>
-    {
-        options.Authority = builder.Configuration.GetValue<string>("Authority");
-
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateAudience = false
-        };
-        options.MapInboundClaims = true;
-    });
 
 builder.Services.AddIdentity<AppUser, AppRole>()
     .AddRoles<AppRole>()
@@ -69,6 +51,9 @@ builder.Services.AddCors(options =>
                 .AllowAnyMethod();
         });
 });
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 
 var app = builder.Build();
 

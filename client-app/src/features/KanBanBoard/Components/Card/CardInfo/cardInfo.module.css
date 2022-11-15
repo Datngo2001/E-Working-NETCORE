@@ -1,0 +1,124 @@
+.cardinfo {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  min-width: 550px;
+  width: fit-content;
+  max-width: 650px;
+  height: fit-content;
+}
+
+.box {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.title {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.title p {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.title svg {
+  height: 18px;
+  width: 18px;
+}
+
+.labels {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.labels label {
+  border-radius: 40px;
+  background-color: gray;
+  color: #fff;
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.labels label svg {
+  height: 16px;
+  width: 16px;
+  cursor: pointer;
+}
+
+.box ul {
+  display: flex;
+  gap: 15px;
+  margin-left: 20px;
+}
+.box ul li {
+  list-style: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.box ul .li_active {
+  box-shadow: 0 0 0 3px yellow;
+}
+
+.progress-bar {
+  width: 100%;
+  border-radius: 30px;
+  height: 10px;
+  border: 1px solid #ccc;
+}
+
+.progress {
+  height: 100%;
+  border-radius: 30px;
+  background-color: skyblue;
+  width: 0;
+  transition: 200ms;
+}
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.task-checkbox {
+  display: flex;
+  gap: 10px;
+}
+
+.task-checkbox input,
+.task-checkbox svg {
+  height: 18px;
+  width: 18px;
+  outline: none;
+  cursor: pointer;
+}
+
+.task-checkbox p {
+  flex: 1;
+  line-height: 18px;
+}
+
+.task-checkbox .completed {
+  text-decoration-line: line-through;
+}
+
+.box input[type='date'] {
+  width: fit-content;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  outline: none;
+  font-size: 1rem;
+  padding: 10px;
+}
