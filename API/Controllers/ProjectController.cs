@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers
 {
 
+    [Authorize(AuthenticationSchemes = "Bearer")]
     public class ProjectController : _APIController
     {
         private readonly IProjectRepository projectRepository;
@@ -22,12 +23,18 @@ namespace API.Controllers
             this.projectRepository = projectRepository;
         }
 
-        //[Authorize(AuthenticationSchemes = "Bearer")]
         [HttpPost]
         public async Task<ActionResult<ProjectDto>> PostProject(CreateProjectDto createProjectDto)
         {
             var userId = userManager.GetUserId(User);
             var result = await projectRepository.CreateProject(createProjectDto, userId);
+            return result;
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<ProjectDto>> PutProject(string id, UpdateProjectDto updateProjectDto)
+        {
+            var result = await projectRepository.UpdateProject(id, updateProjectDto);
             return result;
         }
 
@@ -42,6 +49,22 @@ namespace API.Controllers
         public async Task<ActionResult<List<MemberDto>>> GetProjectMembers(string id)
         {
             var result = await projectRepository.GetProjectMembers(id);
+            return result;
+        }
+
+        [HttpGet("my/all")]
+        public async Task<ActionResult<List<ProjectDto>>> GetMyProjects()
+        {
+            var userId = userManager.GetUserId(User);
+            var result = await projectRepository.GetMyProjects(userId);
+            return result;
+        }
+
+        [HttpGet("joined")]
+        public async Task<ActionResult<List<ProjectDto>>> GetMyJoinedProjects()
+        {
+            var userId = userManager.GetUserId(User);
+            var result = await projectRepository.GetJoinedProjects(userId);
             return result;
         }
     }

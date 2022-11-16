@@ -13,6 +13,7 @@ namespace API.Util
             CreateMap<Project, ProjectDto>();
             CreateMap<CreateProjectDto, Project>();
             CreateMap<AppUser, MemberDto>();
+            CreateMap<UpdateProjectDto, Project>();
         }
     }
 }
