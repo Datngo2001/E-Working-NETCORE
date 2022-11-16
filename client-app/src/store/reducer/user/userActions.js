@@ -4,7 +4,6 @@ import UserManager from "../../../oidc/userManager"
 
 export function signin() {
     try {
-        debugger
         UserManager.signinRedirect();
     } catch (error) {
         console.log(error)
@@ -30,7 +29,6 @@ export function* checkSessionStatus({ payload }) {
             payload.onLoggedIn()
         }
     } catch (error) {
-        debugger
         console.log(error)
         yield put({
             type: SIGNIN_REQUEST,

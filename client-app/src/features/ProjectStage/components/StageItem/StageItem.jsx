@@ -5,24 +5,24 @@ import {
   Menu,
   MenuItem,
   TextField,
-  Tooltip
-} from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import React, { useState } from 'react';
-import styles from './stageItem.module.css';
-import { useDispatch, useSelector } from 'react-redux';
+  Tooltip,
+} from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import React, { useState } from "react";
+import styles from "./stageItem.module.css";
+import { useDispatch, useSelector } from "react-redux";
 import {
   DELETE_STAGE_REQUEST,
-  UPDATE_STAGE_NAME_REQUEST
-} from '../../../../store/reducer/stage/stageActionTypes';
-import CheckIcon from '@mui/icons-material/Check';
-import CloseIcon from '@mui/icons-material/Close';
-import ConfirmModal from '../../../../components/modal/ConfirmModal';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import { useNavigate } from 'react-router';
-import { SET_CURRENT_STAGE } from '../../../../store/reducer/stage/stageActionTypes';
+  UPDATE_STAGE_NAME_REQUEST,
+} from "../../../../store/reducer/stage/stageActionTypes";
+import CheckIcon from "@mui/icons-material/Check";
+import CloseIcon from "@mui/icons-material/Close";
+import ConfirmModal from "../../../../components/modal/ConfirmModal";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import { useNavigate } from "react-router";
+import { SET_CURRENT_STAGE } from "../../../../store/reducer/stage/stageActionTypes";
 
 function StageItem({ stage, row }) {
   const dispatch = useDispatch();
@@ -65,31 +65,35 @@ function StageItem({ stage, row }) {
   };
 
   const handleSave = () => {
-    dispatch({ type: UPDATE_STAGE_NAME_REQUEST, payload: { id: stage._id, name: stageName } });
+    dispatch({
+      type: UPDATE_STAGE_NAME_REQUEST,
+      payload: { id: stage._id, name: stageName },
+    });
     setEditting(false);
   };
 
   return (
     <ListItem
-      className={styles['stage']}
+      className={styles["stage"]}
       style={{
         gridColumn: 1,
         gridRow: row,
-        position: 'sticky',
+        position: "sticky",
         left: 0,
         zIndex: 3,
-        backgroundColor: 'inherit',
-        borderRight: '2px solid #dfe1e6',
-        display: 'flex',
-        alignItems: 'center',
-        paddingLeft: '8px'
-      }}>
+        backgroundColor: "inherit",
+        borderRight: "2px solid #dfe1e6",
+        display: "flex",
+        alignItems: "center",
+        paddingLeft: "8px",
+      }}
+    >
       {editting ? (
         <>
           <TextField
             size="small"
             variant="outlined"
-            sx={{ backgroundColor: '#fff' }}
+            sx={{ backgroundColor: "#fff" }}
             value={stageName}
             onChange={handleNameChange}
           />
@@ -103,9 +107,9 @@ function StageItem({ stage, row }) {
       ) : (
         <>
           <Tooltip title={stage.name}>
-            <ListItemText sx={{ overflow: 'hidden' }} primary={stage.name} />
+            <ListItemText sx={{ overflow: "hidden" }} primary={stage.name} />
           </Tooltip>
-          <div className={styles['button-group']}>
+          <div className={styles["button-group"]}>
             <IconButton onClick={handleMoreClick}>
               <MoreVertIcon />
             </IconButton>
@@ -116,18 +120,20 @@ function StageItem({ stage, row }) {
               open={openMoreMenu}
               onClose={handleMoreClose}
               anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'left'
+                vertical: "top",
+                horizontal: "left",
               }}
               transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left'
-              }}>
+                vertical: "top",
+                horizontal: "left",
+              }}
+            >
               <MenuItem
                 onClick={() => {
                   handleMoreClose();
                   handleEdit();
-                }}>
+                }}
+              >
                 <EditIcon />
                 Edit
               </MenuItem>
@@ -135,16 +141,20 @@ function StageItem({ stage, row }) {
                 onClick={() => {
                   handleMoreClose();
                   handleDelete();
-                }}>
+                }}
+              >
                 <DeleteIcon />
                 Delete
               </MenuItem>
               <MenuItem
                 onClick={() => {
                   handleMoreClose();
-                  navigate(`/console/project/${currentProject._id}/stage/${stage._id}/board`);
+                  navigate(
+                    `/console/project/${currentProject.id}/stage/${stage.id}/board`
+                  );
                   dispatch({ type: SET_CURRENT_STAGE, payload: stage });
-                }}>
+                }}
+              >
                 <DashboardIcon />
                 Boards
               </MenuItem>
