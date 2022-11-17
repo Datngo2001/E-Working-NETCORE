@@ -1,20 +1,21 @@
-import { Box } from '@mui/material';
-import React from 'react';
-import { useRef } from 'react';
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { Box } from "@mui/material";
+import React from "react";
+import { useRef } from "react";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   STAGE_STARTDATE_UPDATE_REQUEST,
-  STAGE_ENDDATE_UPDATE_REQUEST
-} from '../../../../store/reducer/stage/stageActionTypes';
-import { convertDDMMYYYY, dateDiffInDays } from '../../../../util/date';
-import styles from './stage.module.css';
+  STAGE_ENDDATE_UPDATE_REQUEST,
+} from "../../../../store/reducer/stage/stageActionTypes";
+import { convertDDMMYYYY, dateDiffInDays } from "../../../../util/date";
+import styles from "./stage.module.css";
 
 function Stage({ stage, row }) {
   const dispatch = useDispatch();
   const {
-    ganttChart: { startColumnAt, startDate }
+    ganttChart: { startColumnAt, startDate },
   } = useSelector((state) => state.stage);
+  const { currentProject } = useSelector((state) => state.project);
 
   const [startColumn, setStartColumn] = useState(
     startColumnAt + dateDiffInDays(stage.startDate, startDate)
@@ -34,7 +35,7 @@ function Stage({ stage, row }) {
       return;
     }
 
-    if (e.pageX == 0) return;
+    if (e.pageX === 0) return;
 
     // to right
     if (e.pageX - startPos.current > 30) {
@@ -66,7 +67,7 @@ function Stage({ stage, row }) {
       return;
     }
 
-    if (e.pageX == 0) return;
+    if (e.pageX === 0) return;
 
     // to right
     if (e.pageX - endPos.current > 30) {
@@ -95,14 +96,22 @@ function Stage({ stage, row }) {
   const handleStartDragDone = () => {
     dispatch({
       type: STAGE_STARTDATE_UPDATE_REQUEST,
-      payload: { id: stage._id, date: startDateTemp }
+      payload: {
+        projectId: currentProject.id,
+        id: stage.id,
+        date: startDateTemp,
+      },
     });
   };
 
   const handleEndDragDone = () => {
     dispatch({
       type: STAGE_ENDDATE_UPDATE_REQUEST,
-      payload: { id: stage._id, date: endDateTemp }
+      payload: {
+        projectId: currentProject.id,
+        id: stage.id,
+        date: endDateTemp,
+      },
     });
   };
 
@@ -112,24 +121,32 @@ function Stage({ stage, row }) {
         gridRow: row,
         gridColumnStart: startColumn,
         gridColumnEnd: endColumn,
-        height: '100%',
-        display: 'flex',
-        alignItems: 'center',
-        zIndex: 1
-      }}>
-      <Box sx={{ backgroundColor: 'secondary.main' }} className={styles['stage']}>
-        <div className={styles['start-date']}>{convertDDMMYYYY(startDateTemp)}</div>
-        <div className={styles['end-date']}>{convertDDMMYYYY(endDateTemp)}</div>
+        height: "100%",
+        display: "flex",
+        alignItems: "center",
+        zIndex: 1,
+      }}
+    >
+      <Box
+        sx={{ backgroundColor: "secondary.main" }}
+        className={styles["stage"]}
+      >
+        <div className={styles["start-date"]}>
+          {convertDDMMYYYY(startDateTemp)}
+        </div>
+        <div className={styles["end-date"]}>{convertDDMMYYYY(endDateTemp)}</div>
         <button
-          className={styles['start-button']}
+          className={styles["start-button"]}
           onDragCapture={handleStartDrag}
           onDragEnd={handleStartDragDone}
-          draggable></button>
+          draggable
+        ></button>
         <button
-          className={styles['end-button']}
+          className={styles["end-button"]}
           onDragCapture={handleEndDrag}
           onDragEnd={handleEndDragDone}
-          draggable></button>
+          draggable
+        ></button>
       </Box>
     </div>
   );

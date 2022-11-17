@@ -124,7 +124,7 @@ export default function stageReducer(state = init, { type, payload }) {
 }
 
 function updateStageInStore(stages, newStage) {
-    const index = stages.findIndex(stage => stage._id == newStage._id)
+    const index = stages.findIndex(stage => stage.id == newStage.id)
     stages[index] = newStage
     return stages
 }

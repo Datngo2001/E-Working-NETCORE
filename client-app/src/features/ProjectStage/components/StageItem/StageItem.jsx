@@ -47,7 +47,10 @@ function StageItem({ stage, row }) {
 
   const handleConfirmDelete = (isConfirm) => {
     if (isConfirm) {
-      dispatch({ type: DELETE_STAGE_REQUEST, payload: stage._id });
+      dispatch({
+        type: DELETE_STAGE_REQUEST,
+        payload: { projectId: currentProject.id, id: stage.id },
+      });
     }
     setOpenModal(false);
   };
@@ -67,7 +70,7 @@ function StageItem({ stage, row }) {
   const handleSave = () => {
     dispatch({
       type: UPDATE_STAGE_NAME_REQUEST,
-      payload: { id: stage._id, name: stageName },
+      payload: { projectId: currentProject.id, id: stage.id, name: stageName },
     });
     setEditting(false);
   };

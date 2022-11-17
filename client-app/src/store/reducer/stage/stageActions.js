@@ -62,7 +62,7 @@ export function* loadAllProjectStage({ payload }) {
 
 export function* updateStageStartDate({ payload }) {
     try {
-        const res = yield call(updateStartDate, payload.id, payload.date)
+        const res = yield call(updateStartDate, payload.projectId, payload.id, payload.date)
 
         yield put({
             type: STAGE_STARTDATE_UPDATE_SUCCESS,
@@ -78,7 +78,7 @@ export function* updateStageStartDate({ payload }) {
 
 export function* updateStageEndDate({ payload }) {
     try {
-        const res = yield call(updateEndDate, payload.id, payload.date)
+        const res = yield call(updateEndDate, payload.projectId, payload.id, payload.date)
 
         yield put({
             type: STAGE_ENDDATE_UPDATE_SUCCESS,
@@ -94,7 +94,7 @@ export function* updateStageEndDate({ payload }) {
 
 export function* createNewStage({ payload }) {
     try {
-        const res = yield call(createStage, payload)
+        const res = yield call(createStage, payload.projectId, payload.data)
 
         var stage = res.data
         stage.startDate = new Date(stage.startDate)
@@ -114,7 +114,7 @@ export function* createNewStage({ payload }) {
 
 export function* removeStage({ payload }) {
     try {
-        yield call(deleteStage, payload)
+        yield call(deleteStage, payload.projectId, payload.id)
 
         yield put({
             type: DELETE_STAGE_SUCCESS,
@@ -130,7 +130,7 @@ export function* removeStage({ payload }) {
 
 export function* editStageName({ payload }) {
     try {
-        var res = yield call(updateStageName, payload.id, payload.name)
+        var res = yield call(updateStageName, payload.projectId, payload.id, payload.name)
 
         yield put({
             type: UPDATE_STAGE_NAME_SUCCESS,

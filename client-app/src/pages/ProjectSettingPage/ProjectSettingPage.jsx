@@ -1,9 +1,9 @@
-import React from 'react';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router';
-import SettingProject from '../../features/SettingProject/SettingProject';
-import { LOAD_PROJECT_REQUEST } from '../../store/reducer/project/projectActionTypes';
+import React from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router";
+import SettingProject from "../../features/SettingProject/SettingProject";
+import { LOAD_PROJECT_REQUEST } from "../../store/reducer/project/projectActionTypes";
 
 function ProjectSettingPage() {
   const { id } = useParams();
@@ -15,8 +15,8 @@ function ProjectSettingPage() {
   }, []);
 
   return (
-    <div style={{ height: '100%' }}>
-      {currentProject?._id == id && <SettingProject projectId={id} />}
+    <div style={{ height: "100%" }}>
+      {currentProject?.id === id && <SettingProject projectId={id} />}
     </div>
   );
 }

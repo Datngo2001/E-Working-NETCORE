@@ -97,7 +97,7 @@ function SearchMember({ onClose }) {
         <List>
           {users.map((user) => (
             <ListItemButton
-              key={user._id}
+              key={user.id}
               onClick={() => handleMemberClick(user)}
             >
               <ListItemAvatar>

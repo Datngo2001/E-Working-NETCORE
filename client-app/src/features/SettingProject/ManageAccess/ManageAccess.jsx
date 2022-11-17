@@ -82,7 +82,7 @@ function ManageAccess() {
       <List>
         {members.map((member) => (
           <ListItem
-            key={member._id}
+            key={member.id}
             secondaryAction={
               <IconButton
                 edge="end"
@@ -99,7 +99,7 @@ function ManageAccess() {
             <ListItemText
               primary={member.email}
               secondary={
-                member._id == currentProject.creator ? "Creator" : null
+                member.id === currentProject.creator ? "Creator" : null
               }
             />
           </ListItem>

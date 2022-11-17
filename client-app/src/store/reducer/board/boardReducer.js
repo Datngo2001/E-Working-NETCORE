@@ -35,7 +35,7 @@ export default function boardReducer(state = init, { type, payload }) {
 // }
 
 // function updateProjectInStore(projectList, newProject) {
-//     const index = projectList.findIndex(stage => stage._id == newProject._id)
+//     const index = projectList.findIndex(stage => stageid == newProjectid)
 //     projectList[index] = newProject
 //     return projectList
 // }

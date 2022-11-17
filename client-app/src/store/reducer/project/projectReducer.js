@@ -107,7 +107,7 @@ export default function projectReducer(state = init, { type, payload }) {
         case SET_CURRENT_PROJECT:
             return {
                 ...state,
-                currentProject: state.projectList.find(proj => proj._id, payload),
+                currentProject: state.projectList.find(proj => proj.id, payload),
             }
         default:
             return state
@@ -121,7 +121,7 @@ function removeProjectFromStore(projectList, id) {
 }
 
 // function updateProjectInStore(projectList, newProject) {
-//     const index = projectList.findIndex(stage => stage._id == newProject._id)
+//     const index = projectList.findIndex(stage => stageid == newProjectid)
 //     projectList[index] = newProject
 //     return projectList
 // }
