@@ -6,7 +6,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 const schema = yup.object({
   name: yup.string().required(),
-  price: yup.number().required().min(0),
 });
 
 function SettingForm({ project }) {

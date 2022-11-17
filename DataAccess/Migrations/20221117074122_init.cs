@@ -158,7 +158,7 @@ namespace DataAccess.Migrations
                 name: "Projects",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatorId = table.Column<string>(type: "nvarchar(450)", nullable: true)
@@ -177,7 +177,7 @@ namespace DataAccess.Migrations
                 name: "AppUserProject",
                 columns: table => new
                 {
-                    JoinedProjectsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    JoinedProjectsId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     MembersId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
@@ -201,8 +201,8 @@ namespace DataAccess.Migrations
                 name: "Boards",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProjectId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProjectId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -219,13 +219,13 @@ namespace DataAccess.Migrations
                 name: "Stages",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ProjectId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    ProjectId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -247,10 +247,10 @@ namespace DataAccess.Migrations
                 name: "Columns",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    BoardId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    BoardId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CreatorId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
@@ -273,15 +273,15 @@ namespace DataAccess.Migrations
                 name: "Cards",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AssignToId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ColumnId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    StageId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ColumnId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    StageId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreatorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ProjectId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    ProjectId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {

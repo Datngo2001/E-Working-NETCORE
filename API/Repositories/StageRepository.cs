@@ -28,8 +28,9 @@ namespace API.Repositories
 
             mapper.Map(createStageDto, newStage);
 
+            newStage.Id = Guid.NewGuid().ToString();
             newStage.CreatorId = userId;
-            newStage.ProjectId = Guid.Parse(projectId);
+            newStage.ProjectId = projectId;
 
             dbContext.Stages.Add(newStage);
 
@@ -40,7 +41,7 @@ namespace API.Repositories
 
         public async Task<StageDto> DeleteStage(string stageId)
         {
-            var stage = await dbContext.Stages.FirstAsync(p => p.Id == new Guid(stageId));
+            var stage = await dbContext.Stages.FirstAsync(p => p.Id == stageId);
             dbContext.Stages.Remove(stage);
             await dbContext.SaveChangesAsync();
             return mapper.Map<StageDto>(stage);
@@ -49,14 +50,14 @@ namespace API.Repositories
         public async Task<List<StageDto>> GetProjectStage(string projectId)
         {
             return await dbContext.Stages
-                .Where(s => s.ProjectId.ToString() == projectId)
+                .Where(s => s.ProjectId == projectId)
                 .ProjectTo<StageDto>(mapper.ConfigurationProvider)
                 .ToListAsync();
         }
 
         public async Task<StageDto> UpdateStage(UpdateStageDto updateStageDto, string stageId)
         {
-            var stage = await dbContext.Stages.FirstAsync(p => p.Id == new Guid(stageId));
+            var stage = await dbContext.Stages.FirstAsync(p => p.Id == stageId);
             mapper.Map(updateStageDto, stage);
 
             await dbContext.SaveChangesAsync();

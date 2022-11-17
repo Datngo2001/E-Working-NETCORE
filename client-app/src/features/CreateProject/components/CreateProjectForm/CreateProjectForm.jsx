@@ -1,7 +1,6 @@
 import { Button, TextField } from "@mui/material";
 import { Stack } from "@mui/system";
 import React from "react";
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CREATE_PROJECT_REQUEST } from "../../../../store/reducer/project/projectActionTypes";
 import styles from "./createProjectForm.module.css";
@@ -11,7 +10,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 const schema = yup.object({
   name: yup.string().required(),
-  price: yup.number().required().min(0),
 });
 
 function CreateProjectForm({ onProjectCreated }) {
@@ -35,7 +33,7 @@ function CreateProjectForm({ onProjectCreated }) {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={2}>
         <TextField
-          error={errors.name}
+          error={errors.name ? true : false}
           helperText={errors.name?.message}
           label="Project Name"
           multiline
