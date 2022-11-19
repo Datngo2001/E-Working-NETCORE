@@ -1,25 +1,33 @@
 import api from "./";
 
 export function getBoard(projectId) {
-    return api.get(`stage/project/${projectId}/all`)
+    return api.get(`board/project/${projectId}`)
 }
 
-export function updateStageName(projectId, id, name) {
-    return api.patch(`stage/${id}/project/${projectId}/name`, { name: name })
+export function getBoardByStage(projectId, stageId) {
+    return api.get(`board/project/${projectId}/stage/${stageId}`)
 }
 
-export function updateStartDate(projectId, id, date) {
-    return api.patch(`stage/${id}/project/${projectId}/start-date`, { startDate: date })
+export function postColumn(projectId, data) {
+    return api.post(`board/project/${projectId}/create-column`, data)
 }
 
-export function updateEndDate(projectId, id, date) {
-    return api.patch(`stage/${id}/project/${projectId}/end-date`, { endDate: date })
+export function postCard(projectId, data) {
+    return api.post(`board/project/${projectId}/create-card`, data)
 }
 
-export function createStage(projectId, data) {
-    return api.post(`stage/project/${projectId}`, data)
+export function putColumn(projectId, columnId, data) {
+    return api.post(`board/project/${projectId}/update-column/${columnId}`, data)
 }
 
-export function deleteStage(projectId, id) {
-    return api.delete(`stage/${id}/project/${projectId}`)
+export function putCard(projectId, cardId, data) {
+    return api.put(`board/project/${projectId}/update-card/${cardId}`, data)
+}
+
+export function deleteColumn(projectId, columnId) {
+    return api.delete(`board/project/${projectId}/delete-column/${columnId}`)
+}
+
+export function deleteCard(projectId, cardId) {
+    return api.delete(`board/project/${projectId}/delete-card/${cardId}`)
 }

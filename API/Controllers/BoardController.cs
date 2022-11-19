@@ -33,6 +33,13 @@ namespace API.Controllers
             return await boardRepository.GetBoardWithColumnByProject(projectId, stageId);
         }
 
+        [HttpGet("project/{projectId}/stage/{stageId}")]
+        public async Task<ActionResult<BoardDto>> GetBoardByStage(string projectId, string stageId)
+        {
+            return await boardRepository.GetBoardWithColumnByProject(projectId, stageId);
+        }
+
+
         [HttpPost("project/{projectId}/create-column")]
         public async Task<ActionResult<ColumnDto>> CreateColumn(string projectId, [FromBody] CreateColumnDto createColumnDto)
         {
