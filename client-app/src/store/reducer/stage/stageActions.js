@@ -27,7 +27,7 @@ export function* loadAllProjectStage({ payload }) {
             }
         });
 
-        if (stages.length == 0) {
+        if (stages.length === 0) {
             startDate = new Date()
             endDate = new Date()
         } else {
@@ -38,11 +38,11 @@ export function* loadAllProjectStage({ payload }) {
         startDate.setFullYear(startDate.getFullYear() - 1)
         endDate.setFullYear(endDate.getFullYear() + 1)
 
-        while (startDate.getDay() != 1) {
+        while (startDate.getDay() !== 1) {
             startDate.setDate(startDate.getDate() - 1);
         }
 
-        while (endDate.getDay() != 0) {
+        while (endDate.getDay() !== 0) {
             endDate.setDate(endDate.getDate() + 1);
         }
 

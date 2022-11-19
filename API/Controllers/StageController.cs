@@ -44,7 +44,27 @@ namespace API.Controllers
             return await stageRepository.UpdateStage(updateStageDto, userId);
         }
 
-        [HttpDelete("project/{projectId}/{stageId}")]
+        [HttpPatch("{stageId}/project/{projectId}/name")]
+        public async Task<ActionResult<StageDto>> UpdateStageName(string stageId, string projectId, [FromBody] UpdateStageNameDto updateStageNameDto)
+        {
+            return await stageRepository.UpdateStageName(updateStageNameDto, stageId);
+        }
+
+
+        [HttpPatch("{stageId}/project/{projectId}/start-date")]
+        public async Task<ActionResult<StageDto>> UpdateStageStartDate(string stageId, string projectId, [FromBody] UpdateStageStartDateDto updateStageStartDate)
+        {
+            return await stageRepository.UpdateStageStartDate(updateStageStartDate, stageId);
+        }
+
+        [HttpPatch("{stageId}/project/{projectId}/end-date")]
+        public async Task<ActionResult<StageDto>> UpdateStageEndDate(string stageId, string projectId, [FromBody] UpdateStageEndDateDto updateStageEndDateDto)
+        {
+            return await stageRepository.UpdateStageEndDate(updateStageEndDateDto, stageId);
+        }
+
+
+        [HttpDelete("{stageId}/project/{projectId}")]
         public async Task<ActionResult<StageDto>> UpdateStage(string projectId, string stageId)
         {
             return await stageRepository.DeleteStage(stageId);

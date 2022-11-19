@@ -64,5 +64,38 @@ namespace API.Repositories
 
             return mapper.Map<StageDto>(stage);
         }
+
+        public async Task<StageDto> UpdateStageEndDate(UpdateStageEndDateDto updateStageEndDateDto, string stageId)
+        {
+            var stage = await dbContext.Stages.FirstAsync(p => p.Id == stageId);
+
+            stage.EndDate = updateStageEndDateDto.EndDate;
+
+            await dbContext.SaveChangesAsync();
+
+            return mapper.Map<StageDto>(stage);
+        }
+
+        public async Task<StageDto> UpdateStageName(UpdateStageNameDto updateStageNameDto, string stageId)
+        {
+            var stage = await dbContext.Stages.FirstAsync(p => p.Id == stageId);
+
+            stage.Name = updateStageNameDto.Name;
+
+            await dbContext.SaveChangesAsync();
+
+            return mapper.Map<StageDto>(stage);
+        }
+
+        public async Task<StageDto> UpdateStageStartDate(UpdateStageStartDateDto updateStageStartDate, string stageId)
+        {
+            var stage = await dbContext.Stages.FirstAsync(p => p.Id == stageId);
+
+            stage.StartDate = updateStageStartDate.StartDate;
+
+            await dbContext.SaveChangesAsync();
+
+            return mapper.Map<StageDto>(stage);
+        }
     }
 }

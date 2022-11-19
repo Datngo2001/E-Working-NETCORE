@@ -5,15 +5,15 @@ export function getAllProjectStage(projectId) {
 }
 
 export function updateStageName(projectId, id, name) {
-    return api.put(`stage/project/${projectId}/${id}`, { name: name })
+    return api.patch(`stage/${id}/project/${projectId}/name`, { name: name })
 }
 
 export function updateStartDate(projectId, id, date) {
-    return api.put(`stage/project/${projectId}/${id}`, { startDate: date })
+    return api.patch(`stage/${id}/project/${projectId}/start-date`, { startDate: date })
 }
 
 export function updateEndDate(projectId, id, date) {
-    return api.put(`stage/project/${projectId}/${id}`, { endDate: date })
+    return api.patch(`stage/${id}/project/${projectId}/end-date`, { endDate: date })
 }
 
 export function createStage(projectId, data) {
@@ -21,5 +21,5 @@ export function createStage(projectId, data) {
 }
 
 export function deleteStage(projectId, id) {
-    return api.delete(`stage/project/${projectId}/${id}`)
+    return api.delete(`stage/${id}/project/${projectId}`)
 }

@@ -29,7 +29,7 @@ function CreateStage({ row }) {
     const lastStage = stages[stages.length - 1];
     let startDate;
     if (lastStage) {
-      startDate = lastStage.endDate;
+      startDate = new Date(lastStage.endDate);
     } else {
       startDate = new Date();
     }

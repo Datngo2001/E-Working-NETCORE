@@ -27,7 +27,7 @@ function SettingForm({ project }) {
     >
       <Stack spacing={1}>
         <TextField
-          error={errors.name}
+          error={errors.name ? true : false}
           helperText={errors.name?.message}
           label="Project Name"
           InputProps={{

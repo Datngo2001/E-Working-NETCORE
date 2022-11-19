@@ -18,11 +18,11 @@ import {
 } from "../../../../store/reducer/stage/stageActionTypes";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
-import ConfirmModal from "../../../../components/modal/ConfirmModal";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import { useNavigate } from "react-router";
 import { SET_CURRENT_STAGE } from "../../../../store/reducer/stage/stageActionTypes";
+import useConfirmModal from "../../../../hooks/useConfirmModal";
 
 function StageItem({ stage, row }) {
   const dispatch = useDispatch();
@@ -30,7 +30,7 @@ function StageItem({ stage, row }) {
   const navigate = useNavigate();
   const [editting, setEditting] = useState(false);
   const [stageName, setStageName] = useState(stage.name);
-  const [openModal, setOpenModal] = useState(false);
+  const openConfirm = useConfirmModal();
   const [anchorMoreMenu, setAnchorMoreMenu] = React.useState(null);
   const openMoreMenu = Boolean(anchorMoreMenu);
 
@@ -42,17 +42,16 @@ function StageItem({ stage, row }) {
   };
 
   const handleDelete = () => {
-    setOpenModal(true);
-  };
-
-  const handleConfirmDelete = (isConfirm) => {
-    if (isConfirm) {
-      dispatch({
-        type: DELETE_STAGE_REQUEST,
-        payload: { projectId: currentProject.id, id: stage.id },
-      });
-    }
-    setOpenModal(false);
+    openConfirm({
+      message: "Do you want to delete stage?",
+      onYes: () => {
+        dispatch({
+          type: DELETE_STAGE_REQUEST,
+          payload: { projectId: currentProject.id, id: stage.id },
+        });
+      },
+      onNo: () => {},
+    });
   };
 
   const handleEdit = () => {
@@ -165,11 +164,6 @@ function StageItem({ stage, row }) {
           </div>
         </>
       )}
-      <ConfirmModal
-        open={openModal}
-        message={`Do you want to delete stage with name: ${stage.name}`}
-        onAnswer={handleConfirmDelete}
-      />
     </ListItem>
   );
 }
