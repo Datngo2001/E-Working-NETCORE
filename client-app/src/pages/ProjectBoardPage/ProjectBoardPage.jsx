@@ -7,7 +7,7 @@ import { LOAD_PROJECT_REQUEST } from "../../store/reducer/project/projectActionT
 import { CLEAR_CURRENT_STAGE } from "../../store/reducer/stage/stageActionTypes";
 
 function ProjectBoardPage() {
-  const { projectId, stageId } = useParams();
+  const { projectId } = useParams();
   const { currentProject } = useSelector((state) => state.project);
   const dispatch = useDispatch();
 
@@ -21,7 +21,7 @@ function ProjectBoardPage() {
   return (
     <div className="custom-scroll" style={{ height: "100%" }}>
       {currentProject?.id === projectId && (
-        <KanBanBoard projectId={projectId} satgeId={stageId} />
+        <KanBanBoard projectId={projectId} />
       )}
     </div>
   );

@@ -47,6 +47,11 @@ namespace API.Repositories
             return mapper.Map<StageDto>(stage);
         }
 
+        public async Task<string> GetLastStage()
+        {
+            return await dbContext.Stages.OrderBy(s => s.CreateDate).Select(s => s.Id).LastAsync();
+        }
+
         public async Task<List<StageDto>> GetProjectStage(string projectId)
         {
             return await dbContext.Stages
