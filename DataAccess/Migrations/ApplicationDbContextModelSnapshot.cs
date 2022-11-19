@@ -24,8 +24,8 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("AppUserProject", b =>
                 {
-                    b.Property<Guid>("JoinedProjectsId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("JoinedProjectsId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("MembersId")
                         .HasColumnType("nvarchar(450)");
@@ -131,12 +131,12 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("DataAccess.Entities.Board", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ProjectId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -148,15 +148,15 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("DataAccess.Entities.Card", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("AssignToId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<Guid>("ColumnId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ColumnId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
@@ -172,11 +172,11 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ProjectId")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<Guid?>("StageId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("StageId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -195,12 +195,12 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("DataAccess.Entities.Column", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<Guid>("BoardId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("BoardId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
@@ -223,9 +223,8 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("DataAccess.Entities.Project", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
@@ -246,9 +245,8 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("DataAccess.Entities.Stage", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
@@ -263,8 +261,9 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ProjectId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");

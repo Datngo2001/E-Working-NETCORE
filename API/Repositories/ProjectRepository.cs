@@ -25,10 +25,11 @@ namespace API.Repositories
         public async Task<ProjectDto> CreateProject(CreateProjectDto createProjectDto, string userId)
         {
             var newProject = new Project();
-            newProject.Board = new Board();
+            newProject.Board = new Board() { Id= Guid.NewGuid().ToString()};
 
             mapper.Map(createProjectDto, newProject);
 
+            newProject.Id = Guid.NewGuid().ToString();
             newProject.CreatorId = userId;
 
             dbContext.Projects.Add(newProject);
@@ -58,32 +59,33 @@ namespace API.Repositories
         {
             return await dbContext.Projects
                 .ProjectTo<ProjectDto>(mapper.ConfigurationProvider)
-                .FirstAsync(p => p.Id == new Guid(id));
+                .FirstAsync(p => p.Id == id);
         }
 
         public async Task<List<MemberDto>> GetProjectMembers(string id)
         {
             return await dbContext.Users
-                .Where(u => u.JoinedProjects.Any(p => p.Id == new Guid(id)))
+                .Where(u => u.JoinedProjects.Any(p => p.Id == id))
                 .ProjectTo<MemberDto>(mapper.ConfigurationProvider)
                 .ToListAsync();
         }
 
         public async Task<ProjectDto> UpdateProject(string projectId, UpdateProjectDto updateProjectDto)
         {
-            var project = await dbContext.Projects.Include(p=>p.Members).FirstAsync(p => p.Id == new Guid(projectId));
+            var project = await dbContext.Projects.Include(p => p.Members).FirstAsync(p => p.Id == projectId);
             mapper.Map(updateProjectDto, project);
 
             foreach (var member in project.Members)
             {
-                if(!updateProjectDto.UserIds.Contains(member.Id)){
+                if (!updateProjectDto.UserIds.Contains(member.Id))
+                {
                     project.Members.Remove(member);
                 }
             }
 
             foreach (var id in updateProjectDto.UserIds)
             {
-                if (project.Members.FirstOrDefault(m=>m.Id == id) == null)
+                if (project.Members.FirstOrDefault(m => m.Id == id) == null)
                 {
                     project.Members.Add(new AppUser
                     {
@@ -92,7 +94,7 @@ namespace API.Repositories
                 }
             }
 
-            await dbContext.SaveChangesAsync();    
+            await dbContext.SaveChangesAsync();
 
             return mapper.Map<ProjectDto>(project);
         }

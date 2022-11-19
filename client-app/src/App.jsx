@@ -8,6 +8,7 @@ import ConsoleLayout from "./layout/ConsoleLayout/ConsoleLayout";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router";
+import ConfirmModal from "./components/modal/ConfirmModal";
 
 const theme = createTheme({
   palette: {
@@ -38,6 +39,7 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <div>{user ? <ConsoleLayout /> : <NoLoginLayout />}</div>
+      <ConfirmModal />
     </ThemeProvider>
   );
 };

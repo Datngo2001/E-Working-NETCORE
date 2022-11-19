@@ -2,6 +2,7 @@
 using DataAccess.Entities;
 using AutoMapper;
 using CommonModel.Project;
+using CommonModel.Stage;
 
 namespace API.Util
 {
@@ -14,6 +15,11 @@ namespace API.Util
             CreateMap<CreateProjectDto, Project>();
             CreateMap<AppUser, MemberDto>();
             CreateMap<UpdateProjectDto, Project>();
+
+            //Stage
+            CreateMap<Stage, StageDto>();
+            CreateMap<CreateStageDto, Stage>();
+            CreateMap<UpdateStageDto, Stage>();
         }
     }
 }

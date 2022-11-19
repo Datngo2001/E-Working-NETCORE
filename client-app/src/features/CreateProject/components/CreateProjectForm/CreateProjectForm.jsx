@@ -1,43 +1,48 @@
 import { Button, TextField } from "@mui/material";
 import { Stack } from "@mui/system";
 import React from "react";
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CREATE_PROJECT_REQUEST } from "../../../../store/reducer/project/projectActionTypes";
 import styles from "./createProjectForm.module.css";
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+const schema = yup.object({
+  name: yup.string().required(),
+});
 
 function CreateProjectForm({ onProjectCreated }) {
   const { loading } = useSelector((state) => state.project);
   const dispatch = useDispatch();
-  const [inputs, setInputs] = useState({
-    name: "",
-  });
 
-  const handleChange = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    setInputs((values) => ({ ...values, [name]: value }));
-  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(schema) });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const onSubmit = (data) => {
     dispatch({
       type: CREATE_PROJECT_REQUEST,
-      payload: { data: inputs, success: onProjectCreated },
+      payload: { data: data, success: onProjectCreated },
     });
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={2}>
         <TextField
-          name="name"
-          type="text"
-          value={inputs.name || ""}
-          label="Your project name"
-          variant="outlined"
-          onChange={handleChange}
-        ></TextField>
+          error={errors.name ? true : false}
+          helperText={errors.name?.message}
+          label="Project Name"
+          multiline
+          rows={4}
+          InputProps={{
+            ...register("name"),
+            defaultValue: "",
+          }}
+        />
         <div className={styles["submit-container"]}>
           <Button type="submit" variant="contained" disabled={loading}>
             Create

@@ -54,6 +54,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+builder.Services.AddScoped<IStageRepository, StageRepository>();
 
 var app = builder.Build();
 
