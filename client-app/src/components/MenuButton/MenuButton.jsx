@@ -12,7 +12,7 @@ function MenuButton({ icon, renderItems }) {
   };
 
   return (
-    <div>
+    <div onClick={(e) => e.stopPropagation()}>
       <IconButton
         id="demo-positioned-button"
         aria-controls={open ? "demo-positioned-menu" : undefined}

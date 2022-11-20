@@ -25,13 +25,26 @@ namespace API.Repositories
 
         public async Task<BoardDto> GetBoardWithColumnByProject(string projectId, string stageId)
         {
-            return await dbContext.Boards
+            if(stageId == string.Empty)
+            {
+                return await dbContext.Boards
+                .Include(b => b.Project)
+                .Include(b => b.Columns)
+                .Where(b => b.ProjectId == projectId)
+                .ProjectTo<BoardDto>(mapper.ConfigurationProvider)
+                .FirstAsync();
+            }
+
+            var board =  await dbContext.Boards
                 .Include(b => b.Project)
                 .Include(b => b.Columns)
                 .ThenInclude(c => c.Cards.Where(c => c.StageId == stageId))
                 .Where(b => b.ProjectId == projectId)
                 .ProjectTo<BoardDto>(mapper.ConfigurationProvider)
                 .FirstAsync();
+
+            board.StageId = stageId;
+            return board;
         }
 
         public async Task<ColumnDto> CreateBoardColumn(string projectId, string userId, CreateColumnDto createColumnDto)

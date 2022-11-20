@@ -16,6 +16,7 @@ function AddButton({ onSubmit, placeholder, text }) {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
   const [open, setOpen] = useState(false);
@@ -24,9 +25,11 @@ function AddButton({ onSubmit, placeholder, text }) {
     <Box>
       {open ? (
         <form
+          autoComplete="off"
           onSubmit={handleSubmit((data) => {
             onSubmit(data);
             setOpen(false);
+            reset();
           })}
           className={styles["edit"]}
         >

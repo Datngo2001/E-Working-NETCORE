@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import Card from "../Card/Card";
-import Dropdown from "../Dropdown/Dropdown";
 import styles from "./column.module.css";
-import { IconButton, MenuItem } from "@mui/material";
+import { MenuItem } from "@mui/material";
 import AddButton from "../AddButton/AddButton";
 import MenuButton from "../../../../components/MenuButton/MenuButton";
 import useConfirmModal from "../../../../hooks/useConfirmModal";
@@ -66,7 +65,7 @@ function Column({
         <AddButton
           text="+ Add Card"
           placeholder="Enter Column Name"
-          onSubmit={(value) => addCard(column?.id, value)}
+          onSubmit={(data) => addCard(column?.id, data)}
         />
       </div>
     </div>

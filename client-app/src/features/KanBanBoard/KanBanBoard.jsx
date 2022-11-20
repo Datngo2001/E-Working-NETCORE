@@ -44,24 +44,22 @@ function KanBanBoard() {
     });
   };
 
-  const addCardHandler = (id, name) => {
-    debugger;
+  const addCardHandler = (columnId, data) => {
     dispatch({
       type: CREATE_CARD_REQUEST,
       payload: {
         projectId: currentProject.id,
-        data: { columnId: id, name: name },
+        data: { columnId: columnId, stageId: board.stageId, ...data },
       },
     });
   };
 
-  const removeCard = (bid, cid) => {
-    debugger;
+  const removeCard = (cardId) => {
     dispatch({
       type: DELETE_CARD_REQUEST,
       payload: {
         projectId: currentProject.id,
-        cardId: cid,
+        cardId: cardId,
       },
     });
   };

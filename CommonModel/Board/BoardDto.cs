@@ -11,6 +11,7 @@ namespace CommonModel.Board
     {
         public string Id { get; set; } = "";
         public string ProjectId { get; set; } = "";
+        public string StageId { get; set; } = "";
         public List<ColumnDto> Columns { get; set; } = new List<ColumnDto>();
     }
 }
