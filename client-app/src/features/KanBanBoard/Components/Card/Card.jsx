@@ -50,7 +50,7 @@ function Card({
         <CardInfo
           onClose={() => setShowModal(false)}
           card={card}
-          boardId={columnId}
+          columnId={columnId}
           updateCard={updateCard}
         />
       )}

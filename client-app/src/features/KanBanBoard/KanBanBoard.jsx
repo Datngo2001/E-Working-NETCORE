@@ -98,13 +98,13 @@ function KanBanBoard() {
     });
   };
 
-  const updateCard = (bid, cid, card) => {
+  const updateCard = (cardId, data) => {
     dispatch({
       type: UPDATE_CARD_REQUEST,
       payload: {
         projectId: currentProject.id,
-        cardId: cid,
-        data: card,
+        cardId: cardId,
+        data: data,
       },
     });
   };

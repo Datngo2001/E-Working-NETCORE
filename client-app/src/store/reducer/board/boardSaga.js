@@ -6,8 +6,8 @@ export default function* watchBoardAction() {
     yield takeLatest(LOAD_BOARD_REQUEST, loadBoard)
     yield takeLatest(CREATE_CARD_REQUEST, createCard)
     yield takeLatest(CREATE_COLUMN_REQUEST, createColumn)
-    yield takeLatest(UPDATE_COLUMN_REQUEST, updateCard)
-    yield takeLatest(UPDATE_CARD_REQUEST, updateColumn)
+    yield takeLatest(UPDATE_COLUMN_REQUEST, updateColumn)
+    yield takeLatest(UPDATE_CARD_REQUEST, updateCard)
     yield takeLatest(DELETE_CARD_REQUEST, removeCard)
     yield takeLatest(DELETE_COLUMN_REQUEST, removeColumn)
 }

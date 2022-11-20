@@ -17,7 +17,7 @@ export function postCard(projectId, data) {
 }
 
 export function putColumn(projectId, columnId, data) {
-    return api.post(`board/project/${projectId}/update-column/${columnId}`, data)
+    return api.put(`board/project/${projectId}/update-column/${columnId}`, data)
 }
 
 export function putCard(projectId, cardId, data) {
