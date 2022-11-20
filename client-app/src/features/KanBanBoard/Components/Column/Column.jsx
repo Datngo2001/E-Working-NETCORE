@@ -6,6 +6,7 @@ import styles from "./column.module.css";
 import { IconButton, MenuItem } from "@mui/material";
 import AddButton from "../AddButton/AddButton";
 import MenuButton from "../../../../components/MenuButton/MenuButton";
+import useConfirmModal from "../../../../hooks/useConfirmModal";
 
 function Column({
   column,
@@ -16,6 +17,7 @@ function Column({
   updateCard,
   addCard,
 }) {
+  const openConfirm = useConfirmModal();
   return (
     <div className={styles["column"]}>
       <div className={styles["header"]}>
@@ -34,7 +36,13 @@ function Column({
                 key={"Delete"}
                 onClick={() => {
                   close();
-                  removeColumn();
+                  openConfirm({
+                    message: `Do you want to delete column "${column?.name}" ?`,
+                    onYes: () => {
+                      removeColumn();
+                    },
+                    onNo: () => {},
+                  });
                 }}
               >
                 Delete
