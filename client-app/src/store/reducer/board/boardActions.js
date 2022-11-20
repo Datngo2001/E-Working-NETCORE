@@ -4,10 +4,10 @@ import { getBoard, postCard, postColumn, putColumn } from "../../../api/board";
 
 export function* loadBoard({ payload }) {
     try {
-        let board = yield getBoard(payload.projectId);
+        let res = yield getBoard(payload.projectId);
         yield put({
             type: LOAD_BOARD_SUCCESS,
-            payload: board
+            payload: res.data
         })
     } catch (error) {
         yield put({
@@ -19,10 +19,10 @@ export function* loadBoard({ payload }) {
 
 export function* createColumn({ payload }) {
     try {
-        let column = yield postColumn(payload.projectId, payload.data);
+        let res = yield postColumn(payload.projectId, payload.data);
         yield put({
             type: CREATE_COLUMN_SUCCESS,
-            payload: column
+            payload: res.data
         })
     } catch (error) {
         yield put({
@@ -34,10 +34,10 @@ export function* createColumn({ payload }) {
 
 export function* createCard({ payload }) {
     try {
-        let card = yield postCard(payload.projectId, payload.data);
+        let res = yield postCard(payload.projectId, payload.data);
         yield put({
             type: CREATE_CARD_SUCCESS,
-            payload: card
+            payload: res.data
         })
     } catch (error) {
         yield put({
@@ -49,10 +49,10 @@ export function* createCard({ payload }) {
 
 export function* updateColumn({ payload }) {
     try {
-        let column = yield putColumn(payload.projectId, payload.columnId, payload.data);
+        let res = yield putColumn(payload.projectId, payload.columnId, payload.data);
         yield put({
             type: UPDATE_COLUMN_SUCCESS,
-            payload: column
+            payload: res.data
         })
     } catch (error) {
         yield put({
@@ -64,10 +64,10 @@ export function* updateColumn({ payload }) {
 
 export function* updateCard({ payload }) {
     try {
-        let card = yield putColumn(payload.projectId, payload.columnId, payload.data);
+        let res = yield putColumn(payload.projectId, payload.columnId, payload.data);
         yield put({
             type: UPDATE_CARD_SUCCESS,
-            payload: card
+            payload: res.data
         })
     } catch (error) {
         yield put({
@@ -79,10 +79,10 @@ export function* updateCard({ payload }) {
 
 export function* deleteColumn({ payload }) {
     try {
-        let column = yield deleteColumn(payload.projectId, payload.columnId);
+        let res = yield deleteColumn(payload.projectId, payload.columnId);
         yield put({
             type: DELETE_COLUMN_SUCCESS,
-            payload: column
+            payload: res.data
         })
     } catch (error) {
         yield put({
@@ -94,10 +94,10 @@ export function* deleteColumn({ payload }) {
 
 export function* deleteCard({ payload }) {
     try {
-        let card = yield deleteCard(payload.projectId, payload.columnId);
+        let res = yield deleteCard(payload.projectId, payload.columnId);
         yield put({
             type: DELETE_CARD_SUCCESS,
-            payload: card
+            payload: res.data
         })
     } catch (error) {
         yield put({

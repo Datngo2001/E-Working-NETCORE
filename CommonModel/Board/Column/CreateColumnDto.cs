@@ -8,7 +8,6 @@ namespace CommonModel.Board.Column
 {
     public class CreateColumnDto
     {
-        public string BoardId { get; set; }
         public string Name { get; set; } = "";
     }
 }

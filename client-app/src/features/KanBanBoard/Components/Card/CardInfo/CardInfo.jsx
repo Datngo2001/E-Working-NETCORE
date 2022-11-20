@@ -1,16 +1,32 @@
-import React, { useEffect, useState } from 'react';
-import { Calendar, CheckSquare, List, Tag, Trash, Type, X } from 'react-feather';
+import React, { useEffect, useState } from "react";
+import {
+  Calendar,
+  CheckSquare,
+  List,
+  Tag,
+  Trash,
+  Type,
+  X,
+} from "react-feather";
 
-import EditableField from '../../../../../components/EditableField/EditableField';
-import BasicModal from '../../../../../components/modal/BasicModal/BasicModal';
-import styles from './cardInfo.module.css';
+import EditableField from "../../EditableField/EditableField";
+import BasicModal from "../../../../../components/modal/BasicModal/BasicModal";
+import styles from "./cardInfo.module.css";
 
 function CardInfo(props) {
-  const colors = ['#a8193d', '#4fcc25', '#1ebffa', '#8da377', '#9975bd', '#cf61a1', '#240959'];
+  const colors = [
+    "#a8193d",
+    "#4fcc25",
+    "#1ebffa",
+    "#8da377",
+    "#9975bd",
+    "#cf61a1",
+    "#240959",
+  ];
 
   const [selectedColor, setSelectedColor] = useState();
   const [values, setValues] = useState({
-    ...props.card
+    ...props.card,
   });
 
   const updateTitle = (value) => {
@@ -25,10 +41,10 @@ function CardInfo(props) {
     const index = values.labels.findIndex((item) => item.text === label.text);
     if (index > -1) return;
 
-    setSelectedColor('');
+    setSelectedColor("");
     setValues({
       ...values,
-      labels: [...values.labels, label]
+      labels: [...values.labels, label],
     });
   };
 
@@ -37,7 +53,7 @@ function CardInfo(props) {
 
     setValues({
       ...values,
-      labels: tempLabels
+      labels: tempLabels,
     });
   };
 
@@ -45,11 +61,11 @@ function CardInfo(props) {
     const task = {
       id: Date.now() + Math.random() * 2,
       completed: false,
-      text: value
+      text: value,
     };
     setValues({
       ...values,
-      tasks: [...values.tasks, task]
+      tasks: [...values.tasks, task],
     });
   };
 
@@ -59,7 +75,7 @@ function CardInfo(props) {
     const tempTasks = tasks.filter((item) => item.id !== id);
     setValues({
       ...values,
-      tasks: tempTasks
+      tasks: tempTasks,
     });
   };
 
@@ -73,7 +89,7 @@ function CardInfo(props) {
 
     setValues({
       ...values,
-      tasks
+      tasks,
     });
   };
 
@@ -88,7 +104,7 @@ function CardInfo(props) {
 
     setValues({
       ...values,
-      date
+      date,
     });
   };
 
@@ -98,9 +114,9 @@ function CardInfo(props) {
 
   return (
     <BasicModal onClose={props.onClose}>
-      <div className={styles['cardinfo']}>
-        <div className={styles['box']}>
-          <div className={styles['title']}>
+      <div className={styles["cardinfo"]}>
+        <div className={styles["box"]}>
+          <div className={styles["title"]}>
             <Type />
             <p>Title</p>
           </div>
@@ -112,21 +128,21 @@ function CardInfo(props) {
           />
         </div>
 
-        <div className={styles['box']}>
-          <div className={styles['title']}>
+        <div className={styles["box"]}>
+          <div className={styles["title"]}>
             <List />
             <p>Description</p>
           </div>
           <EditableField
             defaultValue={values.desc}
-            text={values.desc || 'Add a Description'}
+            text={values.desc || "Add a Description"}
             placeholder="Enter description"
             onSubmit={updateDesc}
           />
         </div>
 
-        <div className={styles['box']}>
-          <div className={styles['title']}>
+        <div className={styles["box"]}>
+          <div className={styles["title"]}>
             <Calendar />
             <p>Date</p>
           </div>
@@ -138,14 +154,17 @@ function CardInfo(props) {
           />
         </div>
 
-        <div className={styles['box']}>
-          <div className={styles['title']}>
+        <div className={styles["box"]}>
+          <div className={styles["title"]}>
             <Tag />
             <p>Labels</p>
           </div>
-          <div className={styles['labels']}>
+          <div className={styles["labels"]}>
             {values.labels?.map((item, index) => (
-              <label key={index} style={{ backgroundColor: item.color, color: '#fff' }}>
+              <label
+                key={index}
+                style={{ backgroundColor: item.color, color: "#fff" }}
+              >
                 {item.text}
                 <X onClick={() => removeLabel(item)} />
               </label>
@@ -156,7 +175,7 @@ function CardInfo(props) {
               <li
                 key={index + item}
                 style={{ backgroundColor: item }}
-                className={selectedColor === item ? 'li_active' : ''}
+                className={selectedColor === item ? "li_active" : ""}
                 onClick={() => setSelectedColor(item)}
               />
             ))}
@@ -164,12 +183,14 @@ function CardInfo(props) {
           <EditableField
             text="Add Label"
             placeholder="Enter label text"
-            onSubmit={(value) => addLabel({ color: selectedColor, text: value })}
+            onSubmit={(value) =>
+              addLabel({ color: selectedColor, text: value })
+            }
           />
         </div>
 
-        <div className={styles['box']}>
-          <div className={styles['title']}>
+        <div className={styles["box"]}>
+          <div className={styles["title"]}>
             <CheckSquare />
             <p>Tasks</p>
           </div>
@@ -178,7 +199,7 @@ function CardInfo(props) {
               className="progress"
               style={{
                 width: `${calculatePercent()}%`,
-                backgroundColor: calculatePercent() === 100 ? 'limegreen' : ''
+                backgroundColor: calculatePercent() === 100 ? "limegreen" : "",
               }}
             />
           </div>
@@ -188,14 +209,20 @@ function CardInfo(props) {
                 <input
                   type="checkbox"
                   defaultChecked={item.completed}
-                  onChange={(event) => updateTask(item.id, event.target.checked)}
+                  onChange={(event) =>
+                    updateTask(item.id, event.target.checked)
+                  }
                 />
-                <p className={item.completed ? 'completed' : ''}>{item.text}</p>
+                <p className={item.completed ? "completed" : ""}>{item.text}</p>
                 <Trash onClick={() => removeTask(item.id)} />
               </div>
             ))}
           </div>
-          <EditableField text={'Add a Task'} placeholder="Enter task" onSubmit={addTask} />
+          <EditableField
+            text={"Add a Task"}
+            placeholder="Enter task"
+            onSubmit={addTask}
+          />
         </div>
       </div>
     </BasicModal>
