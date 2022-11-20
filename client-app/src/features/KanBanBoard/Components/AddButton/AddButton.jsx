@@ -18,12 +18,18 @@ function AddButton({ onSubmit, placeholder, text }) {
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
-  const [isEditable, setIsEditable] = useState(false);
+  const [open, setOpen] = useState(false);
 
   return (
     <Box>
-      {isEditable ? (
-        <form onSubmit={handleSubmit(onSubmit)} className={styles["edit"]}>
+      {open ? (
+        <form
+          onSubmit={handleSubmit((data) => {
+            onSubmit(data);
+            setOpen(false);
+          })}
+          className={styles["edit"]}
+        >
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <TextField
               sx={{ flexGrow: 1 }}
@@ -40,7 +46,7 @@ function AddButton({ onSubmit, placeholder, text }) {
             <IconButton variant="outlined" color="primary" type="submit">
               <CheckIcon />
             </IconButton>
-            <IconButton onClick={() => setIsEditable(false)}>
+            <IconButton onClick={() => setOpen(false)}>
               <CloseIcon />
             </IconButton>
           </Box>
@@ -48,7 +54,7 @@ function AddButton({ onSubmit, placeholder, text }) {
       ) : (
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Typography sx={{ flexGrow: 1 }}>{text}</Typography>
-          <IconButton onClick={() => setIsEditable(true)}>
+          <IconButton onClick={() => setOpen(true)}>
             <CreateIcon />
           </IconButton>
         </Box>

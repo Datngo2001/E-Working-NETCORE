@@ -3,46 +3,62 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import Card from "../Card/Card";
 import Dropdown from "../Dropdown/Dropdown";
 import styles from "./column.module.css";
-import { IconButton } from "@mui/material";
+import { IconButton, MenuItem } from "@mui/material";
 import AddButton from "../AddButton/AddButton";
+import MenuButton from "../../../../components/MenuButton/MenuButton";
 
-function Column(props) {
-  const [showDropdown, setShowDropdown] = useState(false);
-
+function Column({
+  column,
+  removeColumn,
+  removeCard,
+  dragEntered,
+  dragEnded,
+  updateCard,
+  addCard,
+}) {
   return (
     <div className={styles["column"]}>
       <div className={styles["header"]}>
         <p className={styles["title"]}>
-          {props.column?.name}
-          <span>{props.column?.cards?.length || 0}</span>
+          {column?.name}
+          <span>{column?.cards?.length || 0}</span>
         </p>
         <div className={styles["more"]}>
-          <IconButton onClick={() => setShowDropdown(true)}>
-            <MoreHorizIcon />
-          </IconButton>
-          {showDropdown && (
-            <Dropdown onClose={() => setShowDropdown(false)}>
-              <p onClick={() => props.removecolumn()}>Delete column</p>
-            </Dropdown>
-          )}
+          <MenuButton
+            icon={<MoreHorizIcon />}
+            renderItems={(close) => [
+              <MenuItem key={"Edit"} onClick={close}>
+                Edit
+              </MenuItem>,
+              <MenuItem
+                key={"Delete"}
+                onClick={() => {
+                  close();
+                  removeColumn();
+                }}
+              >
+                Delete
+              </MenuItem>,
+            ]}
+          />
         </div>
       </div>
       <div className={`${styles["cards"]} custom-scroll`}>
-        {props.column?.cards?.map((item) => (
+        {column?.cards?.map((item) => (
           <Card
             key={item.id}
             card={item}
-            columnId={props.column.id}
-            removeCard={props.removeCard}
-            dragEntered={props.dragEntered}
-            dragEnded={props.dragEnded}
-            updateCard={props.updateCard}
+            columnId={column.id}
+            removeCard={removeCard}
+            dragEntered={dragEntered}
+            dragEnded={dragEnded}
+            updateCard={updateCard}
           />
         ))}
         <AddButton
           text="+ Add Card"
           placeholder="Enter Column Name"
-          onSubmit={(value) => props.addCard(props.column?.id, value)}
+          onSubmit={(value) => addCard(column?.id, value)}
         />
       </div>
     </div>

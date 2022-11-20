@@ -48,7 +48,7 @@ namespace API.Controllers
         }
 
         [HttpPost("project/{projectId}/create-card")]
-        public async Task<ActionResult<CardDto>> UpdateStage(string projectId, [FromBody] CreateCardDto createCardDto)
+        public async Task<ActionResult<CardDto>> CreateCard(string projectId, [FromBody] CreateCardDto createCardDto)
         {
             var userId = userManager.GetUserId(User);
             return await boardRepository.CreateCard(projectId, userId, createCardDto);
@@ -62,20 +62,20 @@ namespace API.Controllers
 
 
         [HttpPut("project/{projectId}/update-card/{cardId}")]
-        public async Task<ActionResult<CardDto>> UpdateStageStartDate(string cardId, string projectId, [FromBody] UpdateCardDto updateCardDto)
+        public async Task<ActionResult<CardDto>> UpdateCard(string cardId, string projectId, [FromBody] UpdateCardDto updateCardDto)
         {
             return await boardRepository.UpdateCard(cardId, updateCardDto);
         }
 
         [HttpDelete("project/{projectId}/delete-column/{columnId}")]
-        public async Task<ActionResult<ColumnDto>> UpdateStageEndDate(string columnId, string projectId, [FromBody] UpdateStageEndDateDto updateStageEndDateDto)
+        public async Task<ActionResult<ColumnDto>> DeleteColumn(string columnId, string projectId)
         {
             return await boardRepository.DeleteBoardColumn(columnId);
         }
 
 
         [HttpDelete("project/{projectId}/delete-card/{cardId}")]
-        public async Task<ActionResult<CardDto>> UpdateStage(string cardId, string projectId)
+        public async Task<ActionResult<CardDto>> DeleteCard(string cardId, string projectId)
         {
             return await boardRepository.DeleteCard(cardId);
         }

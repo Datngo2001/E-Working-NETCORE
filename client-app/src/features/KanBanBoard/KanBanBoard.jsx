@@ -34,13 +34,12 @@ function KanBanBoard() {
     });
   };
 
-  const removeColumn = (id) => {
-    debugger;
+  const removeColumn = (columnId) => {
     dispatch({
       type: DELETE_COLUMN_REQUEST,
       payload: {
         projectId: currentProject.id,
-        columnId: id,
+        columnId: columnId,
       },
     });
   };
