@@ -37,27 +37,20 @@ namespace API.Repositories
             return claims.ToList();
         }
 
-        public async Task<PagingDto<AppUserDto>> SearchCustomer(string query, int page, int limit)
+        public async Task<PagingDto<AppUserDto>> SearchUserByEmail(string query, int page, int limit)
         {
-            var customerRole = await roleManager.FindByNameAsync("customer");
+            var queriable = context.Users.Where(u => u.Email.Contains(query));
 
-            var linqQuery =
-                from u in context.Users
-                join ur in context.UserRoles on u.Id equals ur.UserId
-                join r in context.Roles on ur.RoleId equals r.Id
-                where (r.Id == customerRole.Id && u.UserName.Contains(query))
-                select u;
-
-            var customers = await linqQuery
+            var users = await queriable
                 .Skip((page - 1) * limit)
                 .Take(limit)
                 .ProjectTo<AppUserDto>(mapper.ConfigurationProvider)
                 .ToListAsync();
 
-            var count = await linqQuery.CountAsync();
+            var count = await queriable.CountAsync();
 
 
-            if (customers == null)
+            if (users == null)
             {
                 return new PagingDto<AppUserDto>();
             }
@@ -69,7 +62,7 @@ namespace API.Repositories
                 Limit = limit,
                 Count = count,
                 TotalPage = count / limit + 1,
-                Items = customers,
+                Items = users,
             };
         }
     }

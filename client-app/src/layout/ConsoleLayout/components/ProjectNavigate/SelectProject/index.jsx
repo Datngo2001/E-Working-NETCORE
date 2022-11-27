@@ -7,19 +7,19 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import { useSelector } from "react-redux";
 
 function SelectProject({ projects = [], onSelectChange }) {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const { currentProject } = useSelector((state) => state.project);
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClickButton = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleMenuItemClick = (event, index) => {
-    setSelectedIndex(index);
     setAnchorEl(null);
     onSelectChange(projects[index]);
   };
@@ -35,7 +35,7 @@ function SelectProject({ projects = [], onSelectChange }) {
         endIcon={<ArrowDropDownIcon />}
         onClick={handleClickButton}
       >
-        {projects[selectedIndex]?.name}
+        {currentProject?.name}
       </Button>
       <Menu
         id="lock-menu"
@@ -50,7 +50,6 @@ function SelectProject({ projects = [], onSelectChange }) {
         {projects.map((project, index) => (
           <MenuItem
             key={project.id}
-            selected={index === selectedIndex}
             onClick={(event) => handleMenuItemClick(event, index)}
           >
             {project.name}

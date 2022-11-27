@@ -6,6 +6,7 @@ using CommonModel.Stage;
 using CommonModel.Board;
 using CommonModel.Board.Column;
 using CommonModel.Board.Card;
+using CommonModel.User;
 
 namespace API.Util
 {
@@ -32,6 +33,9 @@ namespace API.Util
             CreateMap<UpdateColumnDto, Column>();
             CreateMap<CreateCardDto, Card>();
             CreateMap<UpdateCardDto, Card>();
+
+            //User 
+            CreateMap<AppUser, AppUserDto>();
         }
     }
 }

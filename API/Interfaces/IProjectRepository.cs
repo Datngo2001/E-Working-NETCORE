@@ -14,5 +14,7 @@ namespace API.Interfaces
         Task<List<ProjectDto>> GetJoinedProjects(string userId);
         Task<ProjectDto> CreateProject(CreateProjectDto createProjectDto, string userId);
         Task<ProjectDto> UpdateProject(string projectId, UpdateProjectDto updateProjectDto);
+        Task<ProjectDto> DeleteProject(string id);
+        Task<ProjectDto> UpdateMembers(string projectId, UpdateMembersDto updateMembersDto);
     }
 }
