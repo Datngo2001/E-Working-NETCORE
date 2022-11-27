@@ -16,7 +16,7 @@ function ProjectBoardPage() {
     return () => {
       dispatch({ type: CLEAR_CURRENT_STAGE });
     };
-  }, []);
+  }, [projectId]);
 
   return (
     <div className="custom-scroll" style={{ height: "100%" }}>

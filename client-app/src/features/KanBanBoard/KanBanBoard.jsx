@@ -22,7 +22,6 @@ function KanBanBoard() {
   });
 
   const addColumnHandler = (data) => {
-    debugger;
     dispatch({
       type: CREATE_COLUMN_REQUEST,
       payload: {
