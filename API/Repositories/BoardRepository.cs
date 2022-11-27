@@ -131,6 +131,19 @@ namespace API.Repositories
             return mapper.Map<CardDto>(card);
         }
 
+        public async Task<CardDto> MoveCard(MoveCardDto moveCardDto)
+        {
+            var card = await dbContext.Cards.FirstAsync(c => c.Id == moveCardDto.CardId);
+            var startColumn = await dbContext.Columns.FirstAsync(c => c.Id == moveCardDto.StartColumn);
+            var endColumn = await dbContext.Columns.FirstAsync(c => c.Id == moveCardDto.EndColumn);
+
+            card.Column = endColumn;
+
+            await dbContext.SaveChangesAsync();
+
+            return mapper.Map<CardDto>(card);
+        }
+
         public async Task<ColumnDto> DeleteBoardColumn(string columnId)
         {
             var column = await dbContext.Columns.FirstAsync(c => c.Id == columnId);

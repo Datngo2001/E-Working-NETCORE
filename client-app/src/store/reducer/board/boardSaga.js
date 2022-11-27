@@ -1,6 +1,6 @@
 import { takeLatest } from "redux-saga/effects";
-import { CREATE_CARD_REQUEST, CREATE_COLUMN_REQUEST, DELETE_CARD_REQUEST, DELETE_COLUMN_REQUEST, LOAD_BOARD_REQUEST, UPDATE_CARD_REQUEST, UPDATE_COLUMN_REQUEST } from "./boardActionTypes";
-import { createCard, createColumn, removeColumn, loadBoard, updateCard, updateColumn, removeCard } from "./boardActions";
+import { CREATE_CARD_REQUEST, CREATE_COLUMN_REQUEST, DELETE_CARD_REQUEST, DELETE_COLUMN_REQUEST, LOAD_BOARD_REQUEST, MOVE_CARD_REQUEST, UPDATE_CARD_REQUEST, UPDATE_COLUMN_REQUEST } from "./boardActionTypes";
+import { createCard, createColumn, removeColumn, loadBoard, updateCard, updateColumn, removeCard, handleMoveCard } from "./boardActions";
 
 export default function* watchBoardAction() {
     yield takeLatest(LOAD_BOARD_REQUEST, loadBoard)
@@ -10,4 +10,5 @@ export default function* watchBoardAction() {
     yield takeLatest(UPDATE_CARD_REQUEST, updateCard)
     yield takeLatest(DELETE_CARD_REQUEST, removeCard)
     yield takeLatest(DELETE_COLUMN_REQUEST, removeColumn)
+    yield takeLatest(MOVE_CARD_REQUEST, handleMoveCard)
 }

@@ -1,6 +1,6 @@
 import { put } from "redux-saga/effects";
-import { CREATE_CARD_FAILURE, CREATE_CARD_SUCCESS, CREATE_COLUMN_FAILURE, CREATE_COLUMN_SUCCESS, DELETE_CARD_FAILURE, DELETE_CARD_SUCCESS, DELETE_COLUMN_FAILURE, DELETE_COLUMN_SUCCESS, LOAD_BOARD_FAILURE, LOAD_BOARD_SUCCESS, UPDATE_CARD_FAILURE, UPDATE_CARD_SUCCESS, UPDATE_COLUMN_FAILURE, UPDATE_COLUMN_SUCCESS } from "./boardActionTypes";
-import { deleteCard, deleteColumn, getBoard, postCard, postColumn, putCard, putColumn } from "../../../api/board";
+import { CREATE_CARD_FAILURE, CREATE_CARD_SUCCESS, CREATE_COLUMN_FAILURE, CREATE_COLUMN_SUCCESS, DELETE_CARD_FAILURE, DELETE_CARD_SUCCESS, DELETE_COLUMN_FAILURE, DELETE_COLUMN_SUCCESS, LOAD_BOARD_FAILURE, LOAD_BOARD_SUCCESS, MOVE_CARD_FAILURE, MOVE_CARD_SUCCESS, UPDATE_CARD_FAILURE, UPDATE_CARD_SUCCESS, UPDATE_COLUMN_FAILURE, UPDATE_COLUMN_SUCCESS } from "./boardActionTypes";
+import { deleteCard, deleteColumn, getBoard, moveCard, postCard, postColumn, putCard, putColumn } from "../../../api/board";
 
 export function* loadBoard({ payload }) {
     try {
@@ -102,6 +102,21 @@ export function* removeCard({ payload }) {
     } catch (error) {
         yield put({
             type: DELETE_CARD_FAILURE,
+            payload: error
+        })
+    }
+}
+
+export function* handleMoveCard({ payload }) {
+    try {
+        let res = yield moveCard(payload.projectId, payload.data);
+        yield put({
+            type: MOVE_CARD_SUCCESS,
+            payload: res.data
+        })
+    } catch (error) {
+        yield put({
+            type: MOVE_CARD_FAILURE,
             payload: error
         })
     }

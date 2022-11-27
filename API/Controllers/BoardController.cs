@@ -29,7 +29,7 @@ namespace API.Controllers
         [HttpGet("project/{projectId}")]
         public async Task<ActionResult<BoardDto>> GetBoard(string projectId)
         {
-            var stageId = await stageRepository.GetLastStage(); 
+            var stageId = await stageRepository.GetLastStage();
             return await boardRepository.GetBoardWithColumnByProject(projectId, stageId);
         }
 
@@ -44,7 +44,7 @@ namespace API.Controllers
         public async Task<ActionResult<ColumnDto>> CreateColumn(string projectId, [FromBody] CreateColumnDto createColumnDto)
         {
             var userId = userManager.GetUserId(User);
-            return await boardRepository.CreateBoardColumn(projectId,userId, createColumnDto);
+            return await boardRepository.CreateBoardColumn(projectId, userId, createColumnDto);
         }
 
         [HttpPost("project/{projectId}/create-card")]
@@ -65,6 +65,12 @@ namespace API.Controllers
         public async Task<ActionResult<CardDto>> UpdateCard(string cardId, string projectId, [FromBody] UpdateCardDto updateCardDto)
         {
             return await boardRepository.UpdateCard(cardId, updateCardDto);
+        }
+
+        [HttpPatch("project/{projectId}/mover-card")]
+        public async Task<ActionResult<CardDto>> MoveCard(string projectId, [FromBody] MoveCardDto moveCardDto)
+        {
+            return await boardRepository.MoveCard(moveCardDto);
         }
 
         [HttpDelete("project/{projectId}/delete-column/{columnId}")]

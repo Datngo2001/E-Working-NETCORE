@@ -13,6 +13,6 @@ namespace API.Interfaces
         Task<CardDto> CreateCard(string projectId, string userId, CreateCardDto createCardDto);
         Task<CardDto> UpdateCard(string cardId, UpdateCardDto updateCardDto);
         Task<CardDto> DeleteCard(string cardId);
-
+        Task<CardDto> MoveCard(MoveCardDto moveCardDto);
     }
 }

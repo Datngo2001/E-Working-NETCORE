@@ -7,6 +7,7 @@ import {
   DELETE_CARD_REQUEST,
   DELETE_COLUMN_REQUEST,
   LOAD_BOARD_REQUEST,
+  MOVE_CARD_REQUEST,
   UPDATE_CARD_REQUEST,
 } from "../../store/reducer/board/boardActionTypes";
 import Column from "./Components/Column/Column";
@@ -17,8 +18,8 @@ function KanBanBoard() {
   const { board } = useSelector((state) => state.board);
   const { currentProject } = useSelector((state) => state.project);
   const [targetCard, setTargetCard] = useState({
-    bid: "",
-    cid: "",
+    columnId: "",
+    cardId: "",
   });
 
   const addColumnHandler = (data) => {
@@ -63,37 +64,27 @@ function KanBanBoard() {
     });
   };
 
-  const dragEnded = (bid, cid) => {
-    // let s_boardIndex, s_cardIndex, t_boardIndex, t_cardIndex;
-    // s_boardIndex = boards.findIndex((item) => item.id === bid);
-    // if (s_boardIndex < 0) return;
-    // s_cardIndex = boards[s_boardIndex]?.cards?.findIndex(
-    //   (item) => item.id === cid
-    // );
-    // if (s_cardIndex < 0) return;
-    // t_boardIndex = boards.findIndex((item) => item.id === targetCard.bid);
-    // if (t_boardIndex < 0) return;
-    // t_cardIndex = boards[t_boardIndex]?.cards?.findIndex(
-    //   (item) => item.id === targetCard.cid
-    // );
-    // if (t_cardIndex < 0) return;
-    // const tempBoards = [...boards];
-    // const sourceCard = tempBoards[s_boardIndex].cards[s_cardIndex];
-    // tempBoards[s_boardIndex].cards.splice(s_cardIndex, 1);
-    // tempBoards[t_boardIndex].cards.splice(t_cardIndex, 0, sourceCard);
-    // // UPDATE_CARD_REQUEST
-    // setBoards(tempBoards);
-    // setTargetCard({
-    //   bid: "",
-    //   cid: "",
-    // });
+  const dragEnded = (columnId, cardId) => {
+    console.log("Start", columnId);
+    console.log("Ended", targetCard.columnId);
+    dispatch({
+      type: MOVE_CARD_REQUEST,
+      payload: {
+        projectId: currentProject.id,
+        data: {
+          cardId: cardId,
+          startColumn: columnId,
+          endColumn: targetCard.columnId,
+        },
+      },
+    });
   };
 
-  const dragEntered = (bid, cid) => {
-    if (targetCard.cid === cid) return;
+  const dragEntered = (columnId, cardId) => {
+    if (targetCard.cardId === cardId) return;
     setTargetCard({
-      bid,
-      cid,
+      columnId,
+      cardId,
     });
   };
 

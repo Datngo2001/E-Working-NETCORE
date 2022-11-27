@@ -31,3 +31,7 @@ export function deleteColumn(projectId, columnId) {
 export function deleteCard(projectId, cardId) {
     return api.delete(`board/project/${projectId}/delete-card/${cardId}`)
 }
+
+export function moveCard(projectId, data) {
+    return api.patch(`board/project/${projectId}/mover-card`, data)
+}

@@ -1,4 +1,4 @@
-import { CREATE_CARD_FAILURE, CREATE_CARD_REQUEST, CREATE_CARD_SUCCESS, CREATE_COLUMN_FAILURE, CREATE_COLUMN_REQUEST, CREATE_COLUMN_SUCCESS, DELETE_CARD_FAILURE, DELETE_CARD_REQUEST, DELETE_CARD_SUCCESS, DELETE_COLUMN_FAILURE, DELETE_COLUMN_REQUEST, DELETE_COLUMN_SUCCESS, LOAD_BOARD_FAILURE, LOAD_BOARD_REQUEST, LOAD_BOARD_SUCCESS, UPDATE_CARD_FAILURE, UPDATE_CARD_REQUEST, UPDATE_CARD_SUCCESS, UPDATE_COLUMN_FAILURE, UPDATE_COLUMN_REQUEST, UPDATE_COLUMN_SUCCESS } from "./boardActionTypes"
+import { CREATE_CARD_FAILURE, CREATE_CARD_REQUEST, CREATE_CARD_SUCCESS, CREATE_COLUMN_FAILURE, CREATE_COLUMN_REQUEST, CREATE_COLUMN_SUCCESS, DELETE_CARD_FAILURE, DELETE_CARD_REQUEST, DELETE_CARD_SUCCESS, DELETE_COLUMN_FAILURE, DELETE_COLUMN_REQUEST, DELETE_COLUMN_SUCCESS, LOAD_BOARD_FAILURE, LOAD_BOARD_REQUEST, LOAD_BOARD_SUCCESS, MOVE_CARD_FAILURE, MOVE_CARD_REQUEST, MOVE_CARD_SUCCESS, UPDATE_CARD_FAILURE, UPDATE_CARD_REQUEST, UPDATE_CARD_SUCCESS, UPDATE_COLUMN_FAILURE, UPDATE_COLUMN_REQUEST, UPDATE_COLUMN_SUCCESS } from "./boardActionTypes"
 
 const init = {
     board: {},
@@ -18,6 +18,7 @@ export default function boardReducer(state = init, { type, payload }) {
         case UPDATE_COLUMN_REQUEST:
         case DELETE_CARD_REQUEST:
         case DELETE_COLUMN_REQUEST:
+        case MOVE_CARD_REQUEST:
             return {
                 ...state,
                 loading: true,
@@ -33,6 +34,7 @@ export default function boardReducer(state = init, { type, payload }) {
         case UPDATE_COLUMN_FAILURE:
         case DELETE_CARD_FAILURE:
         case DELETE_COLUMN_FAILURE:
+        case MOVE_CARD_FAILURE:
             return {
                 ...state,
                 loading: true,
@@ -117,7 +119,16 @@ export default function boardReducer(state = init, { type, payload }) {
                     message: null
                 }
             }
-
+        case MOVE_CARD_SUCCESS:
+            return {
+                ...state,
+                board: moveCard(state.board, payload),
+                loading: false,
+                error: {
+                    action: "",
+                    message: null
+                }
+            }
         default:
             return state
     }
@@ -145,6 +156,17 @@ function updateColumnInBoard(board, updateColumn) {
 function removeCard(board, deletedCard) {
     let column = board.columns.find(c => c.id === deletedCard.columnId)
     var index = column.cards.findIndex(stage => stage.id === deletedCard.id)
+    column.cards.splice(index, 1)
+    return board
+}
+
+function moveCard(board, newCard) {
+    board.columns.forEach(c => {
+        let temp = c.findIndex(c => c.id === newCard.columnId)
+        c.cards.splice(temp, 1)
+    })
+    let column = board.columns.find(c => c.id === newCard.columnId)
+    let index = column.cards.findIndex(stage => stage.id === newCard.id)
     column.cards.splice(index, 1)
     return board
 }
