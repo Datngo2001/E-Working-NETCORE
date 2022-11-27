@@ -25,6 +25,7 @@ namespace API.Repositories
         public async Task<StageDto> CreateStage(CreateStageDto createStageDto, string userId, string projectId)
         {
             var newStage = new Stage();
+            newStage.CreateDate = DateTime.Now;
 
             mapper.Map(createStageDto, newStage);
 

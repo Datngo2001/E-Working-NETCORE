@@ -26,6 +26,7 @@ namespace API.Repositories
         {
             var newProject = new Project();
             newProject.Board = new Board() { Id = Guid.NewGuid().ToString() };
+            newProject.CreateDate = DateTime.Now;
 
             mapper.Map(createProjectDto, newProject);
 
@@ -43,6 +44,7 @@ namespace API.Repositories
         {
             return await dbContext.Projects
                 .Where(p => p.Members.Any(m => m.Id == userId))
+                .OrderBy(p => p.CreateDate)
                 .ProjectTo<ProjectDto>(mapper.ConfigurationProvider)
                 .ToListAsync();
         }
@@ -51,6 +53,7 @@ namespace API.Repositories
         {
             return await dbContext.Projects
                 .Where(p => p.Creator != null && p.Creator.Id == userId)
+                .OrderBy(p => p.CreateDate)
                 .ProjectTo<ProjectDto>(mapper.ConfigurationProvider)
                 .ToListAsync();
         }

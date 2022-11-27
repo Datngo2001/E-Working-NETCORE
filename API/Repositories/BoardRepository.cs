@@ -25,23 +25,51 @@ namespace API.Repositories
 
         public async Task<BoardDto> GetBoardWithColumnByProject(string projectId, string stageId)
         {
-            if(stageId == string.Empty)
+            if (stageId == string.Empty)
             {
-                return await dbContext.Boards
+                var temp = await dbContext.Boards
                 .Include(b => b.Project)
                 .Include(b => b.Columns)
                 .Where(b => b.ProjectId == projectId)
                 .ProjectTo<BoardDto>(mapper.ConfigurationProvider)
                 .FirstAsync();
+
+                temp.Columns.Sort(delegate (ColumnDto a, ColumnDto b)
+                {
+                    if (a.CreateDate > b.CreateDate)
+                    {
+                        return 1;
+                    }
+                    else if (a.CreateDate < b.CreateDate)
+                    {
+                        return -1;
+                    }
+                    return 0;
+                });
+
+                return temp;
             }
 
-            var board =  await dbContext.Boards
+            var board = await dbContext.Boards
                 .Include(b => b.Project)
                 .Include(b => b.Columns)
                 .ThenInclude(c => c.Cards.Where(c => c.StageId == stageId))
                 .Where(b => b.ProjectId == projectId)
                 .ProjectTo<BoardDto>(mapper.ConfigurationProvider)
                 .FirstAsync();
+
+            board.Columns.Sort(delegate (ColumnDto a, ColumnDto b)
+            {
+                if (a.CreateDate > b.CreateDate)
+                {
+                    return 1;
+                }
+                else if (a.CreateDate < b.CreateDate)
+                {
+                    return -1;
+                }
+                return 0;
+            });
 
             board.StageId = stageId;
             return board;
@@ -52,6 +80,7 @@ namespace API.Repositories
             var newColumn = new Column();
             newColumn.Id = Guid.NewGuid().ToString();
             newColumn.CreatorId = userId;
+            newColumn.CreateDate = DateTime.Now;
 
             mapper.Map(createColumnDto, newColumn);
 
@@ -71,6 +100,8 @@ namespace API.Repositories
             newCard.Id = Guid.NewGuid().ToString();
             newCard.ProjectId = projectId;
             newCard.CreatorId = userId;
+            newCard.CreateDate = DateTime.Now;
+
             mapper.Map(createCardDto, newCard);
 
             dbContext.Cards.Add(newCard);
