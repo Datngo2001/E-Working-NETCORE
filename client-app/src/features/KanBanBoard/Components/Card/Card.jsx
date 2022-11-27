@@ -1,4 +1,4 @@
-import { MenuItem, Typography } from "@mui/material";
+import { MenuItem, Paper, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { Clock } from "react-feather";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
@@ -45,7 +45,7 @@ function Card({
   };
 
   return (
-    <>
+    <Paper>
       {showModal && (
         <CardInfo
           onClose={() => setShowModal(false)}
@@ -103,7 +103,7 @@ function Card({
           )} */}
         </div>
       </div>
-    </>
+    </Paper>
   );
 }
 
