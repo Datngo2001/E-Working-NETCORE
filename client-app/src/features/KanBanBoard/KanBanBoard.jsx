@@ -9,6 +9,7 @@ import {
   LOAD_BOARD_REQUEST,
   MOVE_CARD_REQUEST,
   UPDATE_CARD_REQUEST,
+  UPDATE_COLUMN_REQUEST,
 } from "../../store/reducer/board/boardActionTypes";
 import Column from "./Components/Column/Column";
 import AddButton from "./Components/AddButton/AddButton";
@@ -40,6 +41,17 @@ function KanBanBoard() {
       payload: {
         projectId: currentProject.id,
         columnId: columnId,
+      },
+    });
+  };
+
+  const updateColumn = (columnId, data) => {
+    dispatch({
+      type: UPDATE_COLUMN_REQUEST,
+      payload: {
+        projectId: currentProject.id,
+        columnId: columnId,
+        data: data,
       },
     });
   };
@@ -114,6 +126,7 @@ function KanBanBoard() {
           column={item}
           addCard={addCardHandler}
           removeColumn={() => removeColumn(item.id)}
+          updateColumn={updateColumn}
           removeCard={removeCard}
           dragEnded={dragEnded}
           dragEntered={dragEntered}

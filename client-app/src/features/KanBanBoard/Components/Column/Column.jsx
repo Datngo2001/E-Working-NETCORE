@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import Card from "../Card/Card";
 import styles from "./column.module.css";
@@ -6,10 +6,12 @@ import { MenuItem } from "@mui/material";
 import AddButton from "../AddButton/AddButton";
 import MenuButton from "../../../../components/MenuButton/MenuButton";
 import useConfirmModal from "../../../../hooks/useConfirmModal";
+import EditModal from "./EditModal";
 
 function Column({
   column,
   removeColumn,
+  updateColumn,
   removeCard,
   dragEntered,
   dragEnded,
@@ -17,6 +19,8 @@ function Column({
   addCard,
 }) {
   const openConfirm = useConfirmModal();
+  const [openEdit, setOpenEdit] = useState(false);
+
   return (
     <div
       className={styles["column"]}
@@ -32,7 +36,13 @@ function Column({
           <MenuButton
             icon={<MoreHorizIcon />}
             renderItems={(close) => [
-              <MenuItem key={"Edit"} onClick={close}>
+              <MenuItem
+                key={"Edit"}
+                onClick={() => {
+                  close();
+                  setOpenEdit(true);
+                }}
+              >
                 Edit
               </MenuItem>,
               <MenuItem
@@ -72,6 +82,13 @@ function Column({
           onSubmit={(data) => addCard(column?.id, data)}
         />
       </div>
+      {openEdit && (
+        <EditModal
+          column={column}
+          updateColumn={updateColumn}
+          onClose={() => setOpenEdit(false)}
+        />
+      )}
     </div>
   );
 }

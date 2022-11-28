@@ -149,7 +149,10 @@ function updateCardToColumn(board, updateCard) {
 
 function updateColumnInBoard(board, updateColumn) {
     let index = board.columns.findIndex(c => c.id === updateColumn.id);
-    board.columns[index] = updateColumn
+    for (const [key, val] of Object.entries(updateColumn)) {
+        if (key === "cards") continue
+        board.columns[index][key] = val
+    }
     return board
 }
 
