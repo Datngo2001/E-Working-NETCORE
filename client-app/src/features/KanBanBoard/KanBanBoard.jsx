@@ -65,8 +65,7 @@ function KanBanBoard() {
   };
 
   const dragEnded = (columnId, cardId) => {
-    console.log("Start", columnId);
-    console.log("Ended", targetCard.columnId);
+    if (targetCard.columnId === columnId) return;
     dispatch({
       type: MOVE_CARD_REQUEST,
       payload: {
@@ -81,7 +80,6 @@ function KanBanBoard() {
   };
 
   const dragEntered = (columnId, cardId) => {
-    if (targetCard.cardId === cardId) return;
     setTargetCard({
       columnId,
       cardId,

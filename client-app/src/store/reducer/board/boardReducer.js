@@ -122,7 +122,7 @@ export default function boardReducer(state = init, { type, payload }) {
         case MOVE_CARD_SUCCESS:
             return {
                 ...state,
-                board: moveCard(state.board, payload),
+                board: moveCard({ ...state.board }, payload),
                 loading: false,
                 error: {
                     action: "",
@@ -161,13 +161,16 @@ function removeCard(board, deletedCard) {
 }
 
 function moveCard(board, newCard) {
-    board.columns.forEach(c => {
-        let temp = c.findIndex(c => c.id === newCard.columnId)
-        c.cards.splice(temp, 1)
+    // remove exist card
+    board.columns.forEach(col => {
+        let index = col.cards.findIndex(c => c.id === newCard.id)
+        if (index > -1) {
+            col.cards.splice(index, 1)
+        }
     })
+    // add card to new column
     let column = board.columns.find(c => c.id === newCard.columnId)
-    let index = column.cards.findIndex(stage => stage.id === newCard.id)
-    column.cards.splice(index, 1)
+    column.cards.push(newCard)
     return board
 }
 

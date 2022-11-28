@@ -18,7 +18,11 @@ function Column({
 }) {
   const openConfirm = useConfirmModal();
   return (
-    <div className={styles["column"]} onDragOver={(e) => e.preventDefault()}>
+    <div
+      className={styles["column"]}
+      onDragOver={(e) => e.preventDefault()}
+      onDragEnter={() => dragEntered(column?.id, null)}
+    >
       <div className={styles["header"]}>
         <p className={styles["title"]}>
           {column?.name}
