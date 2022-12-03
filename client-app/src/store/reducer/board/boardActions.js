@@ -5,6 +5,10 @@ import { deleteCard, deleteColumn, getBoardByStage, getCards, moveCard, postCard
 export function* loadBoard({ payload }) {
     try {
         let res = yield getBoardByStage(payload.projectId, payload.stageId);
+        let board = res.data
+        board.columns.forEach(col => {
+            col.card = []
+        });
         yield put({
             type: LOAD_BOARD_SUCCESS,
             payload: res.data
