@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import Card from "../Card/Card";
 import styles from "./column.module.css";
@@ -7,6 +7,8 @@ import AddButton from "../AddButton/AddButton";
 import MenuButton from "../../../../components/MenuButton/MenuButton";
 import useConfirmModal from "../../../../hooks/useConfirmModal";
 import EditModal from "./EditModal";
+import { useDispatch, useSelector } from "react-redux";
+import { GET_CARD_REQUEST } from "../../../../store/reducer/board/boardActionTypes";
 
 function Column({
   column,
@@ -18,8 +20,23 @@ function Column({
   updateCard,
   addCard,
 }) {
+  const dispatch = useDispatch();
+  const {
+    board: { projectId, stageId },
+  } = useSelector((state) => state.board);
   const openConfirm = useConfirmModal();
   const [openEdit, setOpenEdit] = useState(false);
+
+  useEffect(() => {
+    dispatch({
+      type: GET_CARD_REQUEST,
+      payload: {
+        projectId,
+        stageId,
+        columnId: column?.id,
+      },
+    });
+  }, []);
 
   return (
     <div

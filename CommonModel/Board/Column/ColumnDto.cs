@@ -14,6 +14,6 @@ namespace CommonModel.Board.Column
         public DateTime CreateDate { get; set; } = DateTime.Now;
         public string BoardId { get; set; }
         public string? CreatorId { get; set; }
-        public List<CardDto> Cards { get; set; } = new List<CardDto>();
+        // public List<CardDto> Cards { get; set; } = new List<CardDto>();
     }
 }

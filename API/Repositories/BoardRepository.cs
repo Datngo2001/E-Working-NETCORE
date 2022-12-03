@@ -25,35 +25,9 @@ namespace API.Repositories
 
         public async Task<BoardDto> GetBoardWithColumnByProject(string projectId, string stageId)
         {
-            if (stageId == string.Empty)
-            {
-                var temp = await dbContext.Boards
-                .Include(b => b.Project)
-                .Include(b => b.Columns)
-                .Where(b => b.ProjectId == projectId)
-                .ProjectTo<BoardDto>(mapper.ConfigurationProvider)
-                .FirstAsync();
-
-                temp.Columns.Sort(delegate (ColumnDto a, ColumnDto b)
-                {
-                    if (a.CreateDate > b.CreateDate)
-                    {
-                        return 1;
-                    }
-                    else if (a.CreateDate < b.CreateDate)
-                    {
-                        return -1;
-                    }
-                    return 0;
-                });
-
-                return temp;
-            }
-
             var board = await dbContext.Boards
                 .Include(b => b.Project)
                 .Include(b => b.Columns)
-                .ThenInclude(c => c.Cards.Where(c => c.StageId == stageId))
                 .Where(b => b.ProjectId == projectId)
                 .ProjectTo<BoardDto>(mapper.ConfigurationProvider)
                 .FirstAsync();
@@ -71,8 +45,24 @@ namespace API.Repositories
                 return 0;
             });
 
+            if (stageId == "null" || stageId == null)
+            {
+                stageId = await dbContext.Stages.OrderBy(s => s.CreateDate).Select(s => s.Id).LastAsync();
+            }
             board.StageId = stageId;
             return board;
+        }
+
+        public async Task<List<CardDto>> GetCards(string projectId, string columnId, string stageId)
+        {
+            var cards = await dbContext.Cards
+                .Where(c => c.ColumnId == columnId)
+                .Where(c => c.StageId == stageId)
+                .Where(c => c.ProjectId == projectId)
+                .ProjectTo<CardDto>(mapper.ConfigurationProvider)
+                .ToListAsync();
+
+            return cards;
         }
 
         public async Task<ColumnDto> CreateBoardColumn(string projectId, string userId, CreateColumnDto createColumnDto)
@@ -96,11 +86,17 @@ namespace API.Repositories
 
         public async Task<CardDto> CreateCard(string projectId, string userId, CreateCardDto createCardDto)
         {
+            var stage = await dbContext.Stages.FirstOrDefaultAsync(s => s.Id == createCardDto.StageId);
+            if (stage == null)
+            {
+                throw new Exception("Stage not found");
+            }
             var newCard = new Card();
             newCard.Id = Guid.NewGuid().ToString();
             newCard.ProjectId = projectId;
             newCard.CreatorId = userId;
             newCard.CreateDate = DateTime.Now;
+            newCard.Stage = stage;
 
             mapper.Map(createCardDto, newCard);
 

@@ -86,5 +86,10 @@ namespace API.Controllers
             return await boardRepository.DeleteCard(cardId);
         }
 
+        [HttpGet("project/{projectId}/cards")]
+        public async Task<ActionResult<List<CardDto>>> GetCards(string projectId, string columnId, string stageId)
+        {
+            return await boardRepository.GetCards(projectId, columnId, stageId);
+        }
     }
 }

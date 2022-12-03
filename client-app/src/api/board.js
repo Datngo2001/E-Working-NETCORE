@@ -35,3 +35,12 @@ export function deleteCard(projectId, cardId) {
 export function moveCard(projectId, data) {
     return api.patch(`board/project/${projectId}/mover-card`, data)
 }
+
+export function getCards(projectId, columnId, stageId) {
+    return api.get(`board/project/${projectId}/cards`, {
+        params: {
+            columnId,
+            stageId
+        }
+    })
+}

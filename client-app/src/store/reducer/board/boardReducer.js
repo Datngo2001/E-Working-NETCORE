@@ -1,4 +1,4 @@
-import { CREATE_CARD_FAILURE, CREATE_CARD_REQUEST, CREATE_CARD_SUCCESS, CREATE_COLUMN_FAILURE, CREATE_COLUMN_REQUEST, CREATE_COLUMN_SUCCESS, DELETE_CARD_FAILURE, DELETE_CARD_REQUEST, DELETE_CARD_SUCCESS, DELETE_COLUMN_FAILURE, DELETE_COLUMN_REQUEST, DELETE_COLUMN_SUCCESS, LOAD_BOARD_FAILURE, LOAD_BOARD_REQUEST, LOAD_BOARD_SUCCESS, MOVE_CARD_FAILURE, MOVE_CARD_REQUEST, MOVE_CARD_SUCCESS, UPDATE_CARD_FAILURE, UPDATE_CARD_REQUEST, UPDATE_CARD_SUCCESS, UPDATE_COLUMN_FAILURE, UPDATE_COLUMN_REQUEST, UPDATE_COLUMN_SUCCESS } from "./boardActionTypes"
+import { CLEAR_BOARD, CREATE_CARD_FAILURE, CREATE_CARD_REQUEST, CREATE_CARD_SUCCESS, CREATE_COLUMN_FAILURE, CREATE_COLUMN_REQUEST, CREATE_COLUMN_SUCCESS, DELETE_CARD_FAILURE, DELETE_CARD_REQUEST, DELETE_CARD_SUCCESS, DELETE_COLUMN_FAILURE, DELETE_COLUMN_REQUEST, DELETE_COLUMN_SUCCESS, GET_CARD_FAILURE, GET_CARD_REQUEST, GET_CARD_SUCCESS, LOAD_BOARD_FAILURE, LOAD_BOARD_REQUEST, LOAD_BOARD_SUCCESS, MOVE_CARD_FAILURE, MOVE_CARD_REQUEST, MOVE_CARD_SUCCESS, UPDATE_CARD_FAILURE, UPDATE_CARD_REQUEST, UPDATE_CARD_SUCCESS, UPDATE_COLUMN_FAILURE, UPDATE_COLUMN_REQUEST, UPDATE_COLUMN_SUCCESS } from "./boardActionTypes"
 
 const init = {
     board: {},
@@ -19,6 +19,7 @@ export default function boardReducer(state = init, { type, payload }) {
         case DELETE_CARD_REQUEST:
         case DELETE_COLUMN_REQUEST:
         case MOVE_CARD_REQUEST:
+        case GET_CARD_REQUEST:
             return {
                 ...state,
                 loading: true,
@@ -35,6 +36,7 @@ export default function boardReducer(state = init, { type, payload }) {
         case DELETE_CARD_FAILURE:
         case DELETE_COLUMN_FAILURE:
         case MOVE_CARD_FAILURE:
+        case GET_CARD_FAILURE:
             return {
                 ...state,
                 loading: true,
@@ -129,6 +131,20 @@ export default function boardReducer(state = init, { type, payload }) {
                     message: null
                 }
             }
+        case GET_CARD_SUCCESS:
+            return {
+                ...state,
+                board: addCardListToColumn({ ...state.board }, payload),
+                loading: false,
+                error: {
+                    action: "",
+                    message: null
+                }
+            }
+        case CLEAR_BOARD:
+            return {
+                ...init,
+            }
         default:
             return state
     }
@@ -136,7 +152,11 @@ export default function boardReducer(state = init, { type, payload }) {
 
 function addCardToColumn(board, newCard) {
     let column = board.columns.find(c => c.id === newCard.columnId)
-    column.cards.push(newCard)
+    if (column.cards) {
+        column.cards.push(newCard)
+    } else {
+        column.cards = [newCard]
+    }
     return board
 }
 
@@ -178,7 +198,16 @@ function moveCard(board, newCard) {
 }
 
 function removeColumn(board, deletedColumn) {
-    var index = board.columns.findIndex(stage => stage.id === deletedColumn.id)
+    var index = board.columns.findIndex(col => col.id === deletedColumn.id)
     board.columns.splice(index, 1)
+    return board
+}
+
+function addCardListToColumn(board, cards) {
+    if (!cards || cards.length === 0) {
+        return board
+    }
+    var column = board.columns.find(col => col.id === cards[0].columnId)
+    column.cards = cards
     return board
 }

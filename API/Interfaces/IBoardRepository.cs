@@ -10,6 +10,7 @@ namespace API.Interfaces
         Task<ColumnDto> CreateBoardColumn(string projectId, string userId, CreateColumnDto createColumnDto);
         Task<ColumnDto> UpdateBoardColumn(string columnId, UpdateColumnDto updateColumnDto);
         Task<ColumnDto> DeleteBoardColumn(string columnId);
+        Task<List<CardDto>> GetCards(string projectId, string columnId, string stageId);
         Task<CardDto> CreateCard(string projectId, string userId, CreateCardDto createCardDto);
         Task<CardDto> UpdateCard(string cardId, UpdateCardDto updateCardDto);
         Task<CardDto> DeleteCard(string cardId);

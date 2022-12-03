@@ -14,22 +14,32 @@ import {
 import Column from "./Components/Column/Column";
 import AddButton from "./Components/AddButton/AddButton";
 
-function KanBanBoard() {
+function KanBanBoard({ projectId, stageId }) {
   const dispatch = useDispatch();
   const { board } = useSelector((state) => state.board);
-  const { currentProject } = useSelector((state) => state.project);
   const [targetCard, setTargetCard] = useState({
     columnId: "",
     cardId: "",
   });
 
+  useEffect(() => {
+    dispatch({
+      type: LOAD_BOARD_REQUEST,
+      payload: {
+        projectId: projectId,
+        stageId: stageId,
+      },
+    });
+  }, [projectId, stageId]);
+
   const addColumnHandler = (data) => {
     dispatch({
       type: CREATE_COLUMN_REQUEST,
       payload: {
-        projectId: currentProject.id,
+        projectId: projectId,
         data: {
           name: data.name,
+          stageId: board.stageId,
         },
       },
     });
@@ -39,7 +49,7 @@ function KanBanBoard() {
     dispatch({
       type: DELETE_COLUMN_REQUEST,
       payload: {
-        projectId: currentProject.id,
+        projectId: projectId,
         columnId: columnId,
       },
     });
@@ -49,7 +59,7 @@ function KanBanBoard() {
     dispatch({
       type: UPDATE_COLUMN_REQUEST,
       payload: {
-        projectId: currentProject.id,
+        projectId: projectId,
         columnId: columnId,
         data: data,
       },
@@ -60,7 +70,7 @@ function KanBanBoard() {
     dispatch({
       type: CREATE_CARD_REQUEST,
       payload: {
-        projectId: currentProject.id,
+        projectId: projectId,
         data: { columnId: columnId, stageId: board.stageId, ...data },
       },
     });
@@ -70,7 +80,7 @@ function KanBanBoard() {
     dispatch({
       type: DELETE_CARD_REQUEST,
       payload: {
-        projectId: currentProject.id,
+        projectId: projectId,
         cardId: cardId,
       },
     });
@@ -81,7 +91,7 @@ function KanBanBoard() {
     dispatch({
       type: MOVE_CARD_REQUEST,
       payload: {
-        projectId: currentProject.id,
+        projectId: projectId,
         data: {
           cardId: cardId,
           startColumn: columnId,
@@ -102,21 +112,12 @@ function KanBanBoard() {
     dispatch({
       type: UPDATE_CARD_REQUEST,
       payload: {
-        projectId: currentProject.id,
+        projectId: projectId,
         cardId: cardId,
         data: data,
       },
     });
   };
-
-  useEffect(() => {
-    dispatch({
-      type: LOAD_BOARD_REQUEST,
-      payload: {
-        projectId: currentProject.id,
-      },
-    });
-  }, []);
 
   return (
     <div className={styles["boards"]}>
