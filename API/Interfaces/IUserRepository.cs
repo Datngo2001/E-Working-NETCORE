@@ -10,7 +10,7 @@ namespace API.Interfaces
 {
     public interface IUserRepository
     {
-        Task<PagingDto<AppUserDto>> SearchCustomer(string query, int page, int limit);
+        Task<PagingDto<AppUserDto>> SearchUserByEmail(string query, int page, int limit);
         Task<List<Claim>> GetUserClaimsById(string userId);
     }
 }

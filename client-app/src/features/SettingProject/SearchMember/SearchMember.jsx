@@ -1,11 +1,14 @@
 import {
   Avatar,
   Box,
+  Button,
   IconButton,
   List,
+  ListItem,
   ListItemAvatar,
   ListItemButton,
   ListItemText,
+  Paper,
   TextField,
 } from "@mui/material";
 import React from "react";
@@ -13,20 +16,23 @@ import BasicModal from "../../../components/modal/BasicModal/BasicModal";
 import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
 import { useRef } from "react";
-import { searchUsersByEmail } from "../../../api/user";
+import { searchUsers } from "../../../api/user";
 import { useDispatch, useSelector } from "react-redux";
-import ConfirmModal from "../../../components/modal/ConfirmModal";
-import { UPDATE_PROJECT_REQUEST } from "../../../store/reducer/project/projectActionTypes";
+import {
+  UPDATE_MEMBERS_REQUEST,
+  UPDATE_PROJECT_REQUEST,
+} from "../../../store/reducer/project/projectActionTypes";
+import useConfirmModal from "../../../hooks/useConfirmModal";
+import UserAvatar from "../../../components/UserAvatar";
 
-function SearchMember({ onClose }) {
+function SearchMember({ onClose, members = [] }) {
   const dispatch = useDispatch();
+  const openConfirm = useConfirmModal();
   const { currentProject } = useSelector((state) => state.project);
 
-  const [showConfirm, setShowConfirm] = useState(false);
   const [term, setTerm] = useState("");
   const [users, setUsers] = useState([]);
   const throttle = useRef();
-  const selectedUser = useRef();
 
   const handleSearch = (e) => {
     setTerm(e.target.value);
@@ -36,39 +42,37 @@ function SearchMember({ onClose }) {
     }
 
     throttle.current = setTimeout(async () => {
-      const res = await searchUsersByEmail(e.target.value);
-      setUsers(res.data);
-    }, 500);
+      const res = await searchUsers(e.target.value);
+      setUsers(res.data.items);
+    }, 250);
   };
 
   const handleMemberClick = (user) => {
-    selectedUser.current = user;
-    setShowConfirm(true);
-  };
-
-  const handleAddConfirm = (confirm) => {
-    if (confirm) {
-      dispatch({
-        type: UPDATE_PROJECT_REQUEST,
-        payload: {
-          id: currentProject.id,
-          data: {
-            members: [...currentProject.members, selectedUser.current.id],
+    let ids = currentProject.members.map((m) => m.id);
+    openConfirm({
+      message: `Do you want to add ${user.email}?`,
+      onYes: () => {
+        dispatch({
+          type: UPDATE_MEMBERS_REQUEST,
+          payload: {
+            id: currentProject.id,
+            data: {
+              memberIds: [...ids, user.id],
+            },
           },
-        },
-      });
-    }
-
-    setShowConfirm(false);
-    onClose();
+        });
+        onClose();
+      },
+      onNo: () => {},
+    });
   };
 
   return (
     <BasicModal onClose={onClose}>
-      <Box
+      <Paper
         sx={{
           width: 500,
-          height: 700,
+          height: 600,
           padding: 2,
         }}
       >
@@ -96,23 +100,27 @@ function SearchMember({ onClose }) {
 
         <List>
           {users.map((user) => (
-            <ListItemButton
+            <ListItem
               key={user.id}
-              onClick={() => handleMemberClick(user)}
+              secondaryAction={
+                <Button
+                  variant="contained"
+                  onClick={() => handleMemberClick(user)}
+                  edge="end"
+                  disabled={members.includes((m) => m.id === user.id)}
+                >
+                  Add
+                </Button>
+              }
             >
               <ListItemAvatar>
-                <Avatar src={user.picture}></Avatar>
+                <UserAvatar name={user.userName} />
               </ListItemAvatar>
               <ListItemText primary={user.email} />
-            </ListItemButton>
+            </ListItem>
           ))}
         </List>
-      </Box>
-      <ConfirmModal
-        open={showConfirm}
-        message={`Do you want to add ${selectedUser.current?.email}?`}
-        onAnswer={handleAddConfirm}
-      />
+      </Paper>
     </BasicModal>
   );
 }

@@ -80,9 +80,9 @@ namespace API.Controllers
         }
 
         [HttpPost("search")]
-        public async Task<ActionResult<PagingDto<AppUserDto>>> SearchCustomer([FromBody] UserSearchDto model)
+        public async Task<ActionResult<PagingDto<AppUserDto>>> SearchUser([FromBody] UserSearchDto model)
         {
-            return await userRepository.SearchCustomer(model.Query, model.Page, model.Limit);
+            return await userRepository.SearchUserByEmail(model.Query, model.Page, model.Limit);
         }
 
         [HttpGet("claims/{userId}")]

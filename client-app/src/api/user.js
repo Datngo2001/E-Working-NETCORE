@@ -18,6 +18,10 @@ export function syncUser(token) {
     });
 }
 
-export function searchUsersByEmail(email) {
-    return api.get(`user/find-users/${email}`);
+export function searchUsers(username) {
+    return api.post(`user/search`, {
+        page: 1,
+        limit: 10,
+        query: username
+    });
 }

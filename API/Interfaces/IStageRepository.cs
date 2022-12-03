@@ -9,6 +9,7 @@ namespace API.Interfaces
     public interface IStageRepository
     {
         Task<List<StageDto>> GetProjectStage(string projectId);
+        Task<string> GetLastStage();
         Task<StageDto> CreateStage(CreateStageDto createStageDto, string userId, string projectId);
         Task<StageDto> UpdateStage(UpdateStageDto updateStageDto, string stageId);
         Task<StageDto> UpdateStageName(UpdateStageNameDto updateStageNameDto, string stageId);

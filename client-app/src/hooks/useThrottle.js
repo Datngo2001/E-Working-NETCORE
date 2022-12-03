@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 
-function useThrottle(action, throttle) {
+async function useThrottle(action, throttle) {
     const throttleTimer = useRef();
 
     const handleAction = ({ ...param }) => {

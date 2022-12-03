@@ -25,7 +25,8 @@ namespace API.Repositories
         public async Task<ProjectDto> CreateProject(CreateProjectDto createProjectDto, string userId)
         {
             var newProject = new Project();
-            newProject.Board = new Board() { Id= Guid.NewGuid().ToString()};
+            newProject.Board = new Board() { Id = Guid.NewGuid().ToString() };
+            newProject.CreateDate = DateTime.Now;
 
             mapper.Map(createProjectDto, newProject);
 
@@ -43,6 +44,7 @@ namespace API.Repositories
         {
             return await dbContext.Projects
                 .Where(p => p.Members.Any(m => m.Id == userId))
+                .OrderBy(p => p.CreateDate)
                 .ProjectTo<ProjectDto>(mapper.ConfigurationProvider)
                 .ToListAsync();
         }
@@ -51,6 +53,7 @@ namespace API.Repositories
         {
             return await dbContext.Projects
                 .Where(p => p.Creator != null && p.Creator.Id == userId)
+                .OrderBy(p => p.CreateDate)
                 .ProjectTo<ProjectDto>(mapper.ConfigurationProvider)
                 .ToListAsync();
         }
@@ -75,24 +78,42 @@ namespace API.Repositories
             var project = await dbContext.Projects.Include(p => p.Members).FirstAsync(p => p.Id == projectId);
             mapper.Map(updateProjectDto, project);
 
-            foreach (var member in project.Members)
+            await dbContext.SaveChangesAsync();
+
+            return mapper.Map<ProjectDto>(project);
+        }
+
+        public async Task<ProjectDto> UpdateMembers(string projectId, UpdateMembersDto updateMembersDto)
+        {
+            var project = await dbContext.Projects.Include(p => p.Members).FirstAsync(p => p.Id == projectId);
+
+            for (int i = 0; i < project.Members.Count; i++)
             {
-                if (!updateProjectDto.UserIds.Contains(member.Id))
+                if (!updateMembersDto.MemberIds.Contains(project.Members[i].Id))
                 {
-                    project.Members.Remove(member);
+                    project.Members.Remove(project.Members[i]);
                 }
             }
 
-            foreach (var id in updateProjectDto.UserIds)
+            foreach (var id in updateMembersDto.MemberIds)
             {
                 if (project.Members.FirstOrDefault(m => m.Id == id) == null)
                 {
-                    project.Members.Add(new AppUser
-                    {
-                        Id = id
-                    });
+                    var user = await dbContext.Users.FirstAsync(u => u.Id == id);
+                    project.Members.Add(user);
                 }
             }
+
+            await dbContext.SaveChangesAsync();
+
+            return mapper.Map<ProjectDto>(project);
+        }
+
+        public async Task<ProjectDto> DeleteProject(string id)
+        {
+            var project = await dbContext.Projects.Include(p => p.Members).FirstAsync(p => p.Id == id);
+
+            dbContext.Projects.Remove(project);
 
             await dbContext.SaveChangesAsync();
 

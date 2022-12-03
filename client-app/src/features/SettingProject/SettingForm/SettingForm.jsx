@@ -3,6 +3,8 @@ import React from "react";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useDispatch } from "react-redux";
+import { UPDATE_PROJECT_REQUEST } from "../../../store/reducer/project/projectActionTypes";
 
 const schema = yup.object({
   name: yup.string().required(),
@@ -14,9 +16,13 @@ function SettingForm({ project }) {
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
+  const dispatch = useDispatch();
 
   const onSubmit = (data) => {
-    debugger;
+    dispatch({
+      type: UPDATE_PROJECT_REQUEST,
+      payload: { id: project.id, data },
+    });
   };
 
   return (

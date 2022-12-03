@@ -38,6 +38,13 @@ namespace API.Controllers
             return result;
         }
 
+        [HttpPut("{id}/members")]
+        public async Task<ActionResult<ProjectDto>> UpdateProjectMembers(string id, UpdateMembersDto updateMembersDto)
+        {
+            var result = await projectRepository.UpdateMembers(id, updateMembersDto);
+            return result;
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<ProjectDto>> GetProject(string id)
         {
@@ -65,6 +72,13 @@ namespace API.Controllers
         {
             var userId = userManager.GetUserId(User);
             var result = await projectRepository.GetJoinedProjects(userId);
+            return result;
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<ProjectDto>> DeleteProject(string id)
+        {
+            var result = await projectRepository.DeleteProject(id);
             return result;
         }
     }

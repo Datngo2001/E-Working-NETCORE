@@ -12,7 +12,5 @@ namespace CommonModel.Project
         [Required]
         [MinLength(1)]
         public string Name { get; set; } = "";
-
-        public List<string> UserIds { get; set; } = new List<string>();
     }
 }

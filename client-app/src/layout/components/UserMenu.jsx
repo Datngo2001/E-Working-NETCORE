@@ -1,9 +1,10 @@
-import { Avatar, IconButton, Menu, MenuItem, Tooltip, Typography } from '@mui/material';
-import { Box } from '@mui/system';
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router';
-import { useDispatch, useSelector } from 'react-redux';
-import { SIGNOUT_REQUEST } from '../../store/reducer/user/userActionTypes';
+import { IconButton, Menu, MenuItem, Tooltip, Typography } from "@mui/material";
+import { Box } from "@mui/system";
+import React, { useState } from "react";
+import { useNavigate } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { SIGNOUT_REQUEST } from "../../store/reducer/user/userActionTypes";
+import UserAvatar from "../../components/UserAvatar";
 
 function UserMenu() {
   const navigate = useNavigate();
@@ -16,9 +17,9 @@ function UserMenu() {
       type: SIGNOUT_REQUEST,
       payload: {
         success: () => {
-          navigate('/');
-        }
-      }
+          navigate("/");
+        },
+      },
     });
   };
 
@@ -34,25 +35,26 @@ function UserMenu() {
     <Box sx={{ flexGrow: 0 }}>
       <Tooltip title="Open settings">
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-          <Avatar alt="avatar" src={user?.photoURL} />
+          <UserAvatar name={user?.profile.name} />
         </IconButton>
       </Tooltip>
       <Menu
-        sx={{ mt: '45px' }}
+        sx={{ mt: "45px" }}
         id="menu-appbar"
         anchorEl={anchorElUser}
         anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'right'
+          vertical: "top",
+          horizontal: "right",
         }}
         keepMounted
         transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right'
+          vertical: "top",
+          horizontal: "right",
         }}
         open={Boolean(anchorElUser)}
-        onClose={handleCloseUserMenu}>
-        <MenuItem onClick={() => navigate('/profile')}>
+        onClose={handleCloseUserMenu}
+      >
+        <MenuItem onClick={() => navigate("/profile")}>
           <Typography textAlign="center">Profile</Typography>
         </MenuItem>
         <MenuItem onClick={handleLogout}>

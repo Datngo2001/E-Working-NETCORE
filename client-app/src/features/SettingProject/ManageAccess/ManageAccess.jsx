@@ -15,19 +15,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import {
   LOAD_PROJECT_MEMBERS_REQUEST,
-  UPDATE_PROJECT_REQUEST,
+  UPDATE_MEMBERS_REQUEST,
 } from "../../../store/reducer/project/projectActionTypes";
 import { useState } from "react";
 import SearchMember from "../SearchMember/SearchMember";
 import { useRef } from "react";
-import ConfirmModal from "../../../components/modal/ConfirmModal";
+import UserAvatar from "../../../components/UserAvatar";
+import useConfirmModal from "../../../hooks/useConfirmModal";
 
 function ManageAccess() {
   const dispatch = useDispatch();
   const { currentProject, members } = useSelector((state) => state.project);
   const [showSearch, setShowSearch] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false);
-  const deleteMember = useRef();
+  const openConfirm = useConfirmModal();
 
   useEffect(() => {
     dispatch({
@@ -37,27 +37,23 @@ function ManageAccess() {
   }, [currentProject.members]);
 
   const handleDeleteClick = (member) => {
-    deleteMember.current = member;
-    setShowConfirm(true);
-  };
+    openConfirm({
+      message: `Do you want to delete ${member.email}?`,
+      onYes: () => {
+        var index = currentProject.members.findIndex((m) => m.id === member.id);
+        currentProject.members.splice(index, 1);
+        var ids = currentProject.members.map((m) => m.id);
 
-  const handleDeleteConfirm = (confirm) => {
-    if (confirm) {
-      var index = currentProject.members.findIndex(
-        (member) => member.id === deleteMember.current.id
-      );
-      currentProject.members.splice(index, 1);
-
-      dispatch({
-        type: UPDATE_PROJECT_REQUEST,
-        payload: {
-          id: currentProject.id,
-          data: { members: [...currentProject.members] },
-        },
-      });
-    }
-
-    setShowConfirm(false);
+        dispatch({
+          type: UPDATE_MEMBERS_REQUEST,
+          payload: {
+            id: currentProject.id,
+            data: { memberIds: [...ids] },
+          },
+        });
+      },
+      onNo: () => {},
+    });
   };
 
   return (
@@ -94,7 +90,7 @@ function ManageAccess() {
             }
           >
             <ListItemAvatar>
-              <Avatar src={member.picture}></Avatar>
+              <UserAvatar name={member.userName} />
             </ListItemAvatar>
             <ListItemText
               primary={member.email}
@@ -108,11 +104,6 @@ function ManageAccess() {
       {showSearch && (
         <SearchMember onClose={() => setShowSearch(false)}></SearchMember>
       )}
-      <ConfirmModal
-        open={showConfirm}
-        message={`Do you want to delete ${deleteMember.current?.email}?`}
-        onAnswer={handleDeleteConfirm}
-      />
     </Stack>
   );
 }

@@ -1,203 +1,104 @@
-import React, { useEffect, useState } from 'react';
-import { Calendar, CheckSquare, List, Tag, Trash, Type, X } from 'react-feather';
+import React, { useRef } from "react";
+import BasicModal from "../../../../../components/modal/BasicModal/BasicModal";
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Box, Button, Paper, Stack, TextField } from "@mui/material";
+import RichTextField from "../../../../../components/RichTextField/RichTextField";
+import draftToHtml from "draftjs-to-html";
+import { convertToRaw } from "draft-js";
+import { convertDDMMYYYY } from "../../../../../util/date";
+import useConfirmModal from "../../../../../hooks/useConfirmModal";
 
-import EditableField from '../../../../../components/EditableField/EditableField';
-import BasicModal from '../../../../../components/modal/BasicModal/BasicModal';
-import styles from './cardInfo.module.css';
+const schema = yup.object({
+  name: yup.string().required(),
+});
 
-function CardInfo(props) {
-  const colors = ['#a8193d', '#4fcc25', '#1ebffa', '#8da377', '#9975bd', '#cf61a1', '#240959'];
+function CardInfo({ card, columnId, updateCard, onClose }) {
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    formState,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(schema), defaultValues: card });
+  const message = useRef();
+  const openConfirm = useConfirmModal();
 
-  const [selectedColor, setSelectedColor] = useState();
-  const [values, setValues] = useState({
-    ...props.card
-  });
-
-  const updateTitle = (value) => {
-    setValues({ ...values, title: value });
+  const handleDescriptionChange = (newMessage) => {
+    message.current = newMessage;
   };
 
-  const updateDesc = (value) => {
-    setValues({ ...values, desc: value });
+  const onSubmit = (data) => {
+    data.message = draftToHtml(
+      convertToRaw(message.current.getCurrentContent())
+    );
+    updateCard(card.id, data);
+    onClose();
   };
 
-  const addLabel = (label) => {
-    const index = values.labels.findIndex((item) => item.text === label.text);
-    if (index > -1) return;
-
-    setSelectedColor('');
-    setValues({
-      ...values,
-      labels: [...values.labels, label]
-    });
+  const handleClose = () => {
+    if (formState.isDirty || message.current !== card.message) {
+      openConfirm({
+        message: "Save Changes ?",
+        onYes: () => {
+          let data = getValues();
+          data.message = draftToHtml(
+            convertToRaw(message.current.getCurrentContent())
+          );
+          updateCard(card.id, data);
+          onClose();
+        },
+        onNo: () => {
+          onClose();
+        },
+      });
+    } else {
+      onClose();
+    }
   };
-
-  const removeLabel = (label) => {
-    const tempLabels = values.labels.filter((item) => item.text !== label.text);
-
-    setValues({
-      ...values,
-      labels: tempLabels
-    });
-  };
-
-  const addTask = (value) => {
-    const task = {
-      id: Date.now() + Math.random() * 2,
-      completed: false,
-      text: value
-    };
-    setValues({
-      ...values,
-      tasks: [...values.tasks, task]
-    });
-  };
-
-  const removeTask = (id) => {
-    const tasks = [...values.tasks];
-
-    const tempTasks = tasks.filter((item) => item.id !== id);
-    setValues({
-      ...values,
-      tasks: tempTasks
-    });
-  };
-
-  const updateTask = (id, value) => {
-    const tasks = [...values.tasks];
-
-    const index = tasks.findIndex((item) => item.id === id);
-    if (index < 0) return;
-
-    tasks[index].completed = value;
-
-    setValues({
-      ...values,
-      tasks
-    });
-  };
-
-  const calculatePercent = () => {
-    if (!values.tasks?.length) return 0;
-    const completed = values.tasks?.filter((item) => item.completed)?.length;
-    return (completed / values.tasks?.length) * 100;
-  };
-
-  const updateDate = (date) => {
-    if (!date) return;
-
-    setValues({
-      ...values,
-      date
-    });
-  };
-
-  useEffect(() => {
-    if (props.updateCard) props.updateCard(props.boardId, values.id, values);
-  }, [values]);
 
   return (
-    <BasicModal onClose={props.onClose}>
-      <div className={styles['cardinfo']}>
-        <div className={styles['box']}>
-          <div className={styles['title']}>
-            <Type />
-            <p>Title</p>
-          </div>
-          <EditableField
-            defaultValue={values.title}
-            text={values.title}
-            placeholder="Enter Title"
-            onSubmit={updateTitle}
-          />
-        </div>
-
-        <div className={styles['box']}>
-          <div className={styles['title']}>
-            <List />
-            <p>Description</p>
-          </div>
-          <EditableField
-            defaultValue={values.desc}
-            text={values.desc || 'Add a Description'}
-            placeholder="Enter description"
-            onSubmit={updateDesc}
-          />
-        </div>
-
-        <div className={styles['box']}>
-          <div className={styles['title']}>
-            <Calendar />
-            <p>Date</p>
-          </div>
-          <input
-            type="date"
-            defaultValue={values.date}
-            min={new Date().toISOString().substr(0, 10)}
-            onChange={(event) => updateDate(event.target.value)}
-          />
-        </div>
-
-        <div className={styles['box']}>
-          <div className={styles['title']}>
-            <Tag />
-            <p>Labels</p>
-          </div>
-          <div className={styles['labels']}>
-            {values.labels?.map((item, index) => (
-              <label key={index} style={{ backgroundColor: item.color, color: '#fff' }}>
-                {item.text}
-                <X onClick={() => removeLabel(item)} />
-              </label>
-            ))}
-          </div>
-          <ul>
-            {colors.map((item, index) => (
-              <li
-                key={index + item}
-                style={{ backgroundColor: item }}
-                className={selectedColor === item ? 'li_active' : ''}
-                onClick={() => setSelectedColor(item)}
+    <BasicModal onClose={handleClose}>
+      <Paper sx={{ maxWidth: 800, padding: 2 }}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Box sx={{ display: "flex", gap: 1 }}>
+            <Stack spacing={1}>
+              <TextField
+                label="Name"
+                type="text"
+                error={errors.name ? true : false}
+                helperText={errors.name?.message}
+                InputProps={{
+                  ...register("name"),
+                }}
               />
-            ))}
-          </ul>
-          <EditableField
-            text="Add Label"
-            placeholder="Enter label text"
-            onSubmit={(value) => addLabel({ color: selectedColor, text: value })}
-          />
-        </div>
-
-        <div className={styles['box']}>
-          <div className={styles['title']}>
-            <CheckSquare />
-            <p>Tasks</p>
-          </div>
-          <div className="progress-bar">
-            <div
-              className="progress"
-              style={{
-                width: `${calculatePercent()}%`,
-                backgroundColor: calculatePercent() === 100 ? 'limegreen' : ''
-              }}
-            />
-          </div>
-          <div className="task-list">
-            {values.tasks?.map((item) => (
-              <div key={item.id} className="task-checkbox">
-                <input
-                  type="checkbox"
-                  defaultChecked={item.completed}
-                  onChange={(event) => updateTask(item.id, event.target.checked)}
+              <Box>
+                <RichTextField
+                  defaultValue={card.message}
+                  onChange={handleDescriptionChange}
                 />
-                <p className={item.completed ? 'completed' : ''}>{item.text}</p>
-                <Trash onClick={() => removeTask(item.id)} />
-              </div>
-            ))}
-          </div>
-          <EditableField text={'Add a Task'} placeholder="Enter task" onSubmit={addTask} />
-        </div>
-      </div>
+              </Box>
+            </Stack>
+            <Stack spacing={1} sx={{ flexShrink: 0 }}>
+              <TextField
+                label="Create Date"
+                type="text"
+                value={convertDDMMYYYY(card.createDate)}
+                InputProps={{
+                  readOnly: true,
+                }}
+              />
+            </Stack>
+          </Box>
+          <Box sx={{ textAlign: "end", marginTop: 1 }}>
+            <Button type="submit" variant="contained">
+              Save
+            </Button>
+            <Button onClick={onClose}>Cancel</Button>
+          </Box>
+        </form>
+      </Paper>
     </BasicModal>
   );
 }

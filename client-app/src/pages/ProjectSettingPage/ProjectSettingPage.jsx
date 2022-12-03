@@ -12,7 +12,7 @@ function ProjectSettingPage() {
 
   useEffect(() => {
     dispatch({ type: LOAD_PROJECT_REQUEST, payload: projectId });
-  }, []);
+  }, [projectId]);
 
   return (
     <div style={{ height: "100%" }}>

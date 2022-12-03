@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/E-Working-NETCORE/E-Working-NETCORE.csproj",
+                "${workspaceFolder}/API/API.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/E-Working-NETCORE/E-Working-NETCORE.csproj",
+                "${workspaceFolder}/API/API.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -33,7 +33,7 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/E-Working-NETCORE/E-Working-NETCORE.csproj"
+                "${workspaceFolder}/API/API.csproj"
             ],
             "problemMatcher": "$msCompile"
         }

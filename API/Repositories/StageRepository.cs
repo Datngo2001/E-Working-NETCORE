@@ -25,6 +25,7 @@ namespace API.Repositories
         public async Task<StageDto> CreateStage(CreateStageDto createStageDto, string userId, string projectId)
         {
             var newStage = new Stage();
+            newStage.CreateDate = DateTime.Now;
 
             mapper.Map(createStageDto, newStage);
 
@@ -45,6 +46,11 @@ namespace API.Repositories
             dbContext.Stages.Remove(stage);
             await dbContext.SaveChangesAsync();
             return mapper.Map<StageDto>(stage);
+        }
+
+        public async Task<string> GetLastStage()
+        {
+            return await dbContext.Stages.OrderBy(s => s.CreateDate).Select(s => s.Id).LastAsync();
         }
 
         public async Task<List<StageDto>> GetProjectStage(string projectId)
