@@ -11,9 +11,7 @@ import { LOAD_PROJECT_REQUEST } from "../../store/reducer/project/projectActionT
 import { CLEAR_CURRENT_STAGE } from "../../store/reducer/stage/stageActionTypes";
 
 function ProjectBoardPage() {
-  const { projectId } = useParams();
-  const query = useQuery();
-  const stageId = query.get("stageId");
+  const { projectId, stageId } = useParams();
   const { currentProject } = useSelector((state) => state.project);
   const dispatch = useDispatch();
 

@@ -10,6 +10,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import styles from "./consoleAppbar.module.css";
 import ProjectNavigate from "../ProjectNavigate";
 import { Link, useLocation } from "react-router-dom";
+import StageNavigate from "../StageNavigate";
 
 function ConsoleAppbar() {
   const { pathname } = useLocation();
@@ -21,8 +22,15 @@ function ConsoleAppbar() {
     },
   ];
 
-  const isViewProjectSelect = () => {
+  const isProjectRoute = () => {
     if (pathname.includes("project/")) {
+      return true;
+    }
+    return false;
+  };
+
+  const isBoardRoute = () => {
+    if (pathname.includes("/board")) {
       return true;
     }
     return false;
@@ -44,7 +52,8 @@ function ConsoleAppbar() {
               >
                 Console
               </Link>
-              {isViewProjectSelect() && <ProjectNavigate />}
+              {isProjectRoute() && <ProjectNavigate />}
+              {isBoardRoute() && <StageNavigate />}
             </Breadcrumbs>
           </Box>
 

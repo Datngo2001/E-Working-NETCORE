@@ -19,6 +19,10 @@ function ConsoleRoute() {
           element={<ProjectBoardPage />}
         />
         <Route
+          path="/console/project/:projectId/board/stage/:stageId"
+          element={<ProjectBoardPage />}
+        />
+        <Route
           path="/console/project/:projectId/setting"
           element={<ProjectSettingPage />}
         />

@@ -1,9 +1,10 @@
-import { Grid } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+import AppSkeleton from "../../components/AppSkeleton";
 import {
   MY_PROJECT_REQUEST,
   SET_CURRENT_PROJECT,
@@ -60,6 +61,12 @@ function ProjectList() {
             <ProjectCard name={project.name} />
           </Grid>
         ))}
+        {!projectList ? (
+          <Box sx={{ display: "flex", gap: 1 }}>
+            <AppSkeleton />
+            <AppSkeleton />
+          </Box>
+        ) : null}
       </Grid>
       <CreateProjectModal isOpen={isShowModal} closeModal={closeModal} />
     </div>

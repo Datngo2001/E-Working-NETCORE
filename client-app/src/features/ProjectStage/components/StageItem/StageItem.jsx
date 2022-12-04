@@ -152,7 +152,7 @@ function StageItem({ stage, row }) {
                 onClick={() => {
                   handleMoreClose();
                   navigate(
-                    `/console/project/${currentProject.id}/board?stageId=${stage.id}`
+                    `/console/project/${currentProject.id}/board/stage/${stage.id}`
                   );
                   dispatch({ type: SET_CURRENT_STAGE, payload: stage });
                 }}

@@ -36,7 +36,7 @@ function Column({
         columnId: column?.id,
       },
     });
-  }, []);
+  }, [stageId]);
 
   return (
     <div
