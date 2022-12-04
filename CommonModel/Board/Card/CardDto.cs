@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CommonModel.Project;
 
 namespace CommonModel.Board.Card
 {
@@ -14,6 +15,7 @@ namespace CommonModel.Board.Card
         public DateTime CreateDate { get; set; } = DateTime.Now;
 
         public string? AssignToId { get; set; }
+        public MemberDto? AssignTo { get; set; }
 
         public string ColumnId { get; set; }
 

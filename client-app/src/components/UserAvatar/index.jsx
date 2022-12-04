@@ -20,17 +20,19 @@ function stringToColor(string) {
   return color;
 }
 
-function stringAvatar(name) {
+function getProps(name, width, height) {
   return {
     sx: {
       bgcolor: stringToColor(name),
+      width: width,
+      height: height,
     },
     children: `${name[0]}`,
   };
 }
 
-function UserAvatar({ name }) {
-  return <Avatar {...stringAvatar(name)} />;
+function UserAvatar({ name, width, height }) {
+  return <Avatar {...getProps(name, width, height)} />;
 }
 
 export default UserAvatar;
