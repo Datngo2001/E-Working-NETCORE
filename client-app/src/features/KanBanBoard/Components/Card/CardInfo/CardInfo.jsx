@@ -9,6 +9,7 @@ import draftToHtml from "draftjs-to-html";
 import { convertToRaw } from "draft-js";
 import { convertDDMMYYYY } from "../../../../../util/date";
 import useConfirmModal from "../../../../../hooks/useConfirmModal";
+import Assignment from "../Assignment";
 
 const schema = yup.object({
   name: yup.string().required(),
@@ -24,6 +25,7 @@ function CardInfo({ card, columnId, updateCard, onClose }) {
   } = useForm({ resolver: yupResolver(schema), defaultValues: card });
   const message = useRef();
   const openConfirm = useConfirmModal();
+  const assignTo = useRef(card.assignTo);
 
   const handleDescriptionChange = (newMessage) => {
     message.current = newMessage;
@@ -33,6 +35,7 @@ function CardInfo({ card, columnId, updateCard, onClose }) {
     data.message = draftToHtml(
       convertToRaw(message.current.getCurrentContent())
     );
+    data.assignToId = assignTo.current;
     updateCard(card.id, data);
     onClose();
   };
@@ -87,6 +90,12 @@ function CardInfo({ card, columnId, updateCard, onClose }) {
                 value={convertDDMMYYYY(card.createDate)}
                 InputProps={{
                   readOnly: true,
+                }}
+              />
+              <Assignment
+                assignTo={card.assignTo}
+                onUserChange={(user) => {
+                  assignTo.current = user?.id;
                 }}
               />
             </Stack>

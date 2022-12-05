@@ -1,10 +1,12 @@
 import { Box, Button, Menu, MenuItem } from "@mui/material";
 import React, { useState } from "react";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { useSelector } from "react-redux";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
-function SelectProject({ projects = [], onSelectChange }) {
-  const { currentProject } = useSelector((state) => state.project);
+function SelectStage({ stages, onSelectChange }) {
+  const {
+    board: { stageId },
+  } = useSelector((state) => state.board);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClickButton = (event) => {
@@ -13,7 +15,7 @@ function SelectProject({ projects = [], onSelectChange }) {
 
   const handleMenuItemClick = (event, index) => {
     setAnchorEl(null);
-    onSelectChange(projects[index]);
+    onSelectChange(stages[index]);
   };
 
   const handleClose = () => {
@@ -27,7 +29,7 @@ function SelectProject({ projects = [], onSelectChange }) {
         endIcon={<ArrowDropDownIcon />}
         onClick={handleClickButton}
       >
-        {currentProject?.name}
+        {stages?.find((s) => s.id === stageId)?.name}
       </Button>
       <Menu
         id="lock-menu"
@@ -39,12 +41,12 @@ function SelectProject({ projects = [], onSelectChange }) {
           role: "listbox",
         }}
       >
-        {projects.map((project, index) => (
+        {stages.map((stage, index) => (
           <MenuItem
-            key={project.id}
+            key={stage.id}
             onClick={(event) => handleMenuItemClick(event, index)}
           >
-            {project.name}
+            {stage.name}
           </MenuItem>
         ))}
       </Menu>
@@ -52,4 +54,4 @@ function SelectProject({ projects = [], onSelectChange }) {
   );
 }
 
-export default SelectProject;
+export default SelectStage;

@@ -47,6 +47,7 @@
 }
 
 .footer-item {
+  height: 100%;
   border-radius: 40px;
   padding: 4px 12px;
   background-color: #f8f8f8;

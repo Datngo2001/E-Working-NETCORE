@@ -7,6 +7,7 @@ import CardInfo from "./CardInfo/CardInfo";
 import MenuButton from "../../../../components/MenuButton/MenuButton";
 import useConfirmModal from "../../../../hooks/useConfirmModal";
 import { Box } from "@mui/system";
+import UserAvatar from "../../../../components/UserAvatar";
 
 function Card({
   card,
@@ -95,12 +96,9 @@ function Card({
               {formatDate(card.createDate)}
             </p>
           )}
-          {/* {tasks && tasks?.length > 0 && (
-            <p className={styles["footer-item"]}>
-              <CheckSquare className={styles["footer-icon"]} />
-              {tasks?.filter((item) => item.completed)?.length}/{tasks?.length}
-            </p>
-          )} */}
+          {card.assignTo && (
+            <UserAvatar name={card.assignTo.userName} width={30} height={30} />
+          )}
         </div>
       </div>
     </Paper>

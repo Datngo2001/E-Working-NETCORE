@@ -59,6 +59,7 @@ namespace API.Repositories
                 .Where(c => c.ColumnId == columnId)
                 .Where(c => c.StageId == stageId)
                 .Where(c => c.ProjectId == projectId)
+                .Include(c => c.AssignTo)
                 .ProjectTo<CardDto>(mapper.ConfigurationProvider)
                 .ToListAsync();
 
@@ -123,7 +124,7 @@ namespace API.Repositories
             mapper.Map(updateCardDto, card);
 
             await dbContext.SaveChangesAsync();
-
+            card = await dbContext.Cards.Include(c => c.AssignTo).FirstAsync(c => c.Id == cardId);
             return mapper.Map<CardDto>(card);
         }
 

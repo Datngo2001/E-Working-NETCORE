@@ -1,6 +1,6 @@
 import { call, put } from "redux-saga/effects";
-import { CREATE_PROJECT_FAILURE, CREATE_PROJECT_SUCCESS, DELETE_PROJECT_FAILURE, DELETE_PROJECT_SUCCESS, LOAD_PROJECT_FAILURE, LOAD_PROJECT_MEMBERS_FAILURE, LOAD_PROJECT_MEMBERS_SUCCESS, LOAD_PROJECT_SUCCESS, MY_PROJECT_FAILURE, MY_PROJECT_SUCCESS, UPDATE_MEMBERS_FAILURE, UPDATE_MEMBERS_SUCCESS, UPDATE_PROJECT_FAILURE, UPDATE_PROJECT_SUCCESS } from "./projectActionTypes";
-import { postProject, getMyProject as getMyProjectApi, getProjectById, putProject, getProjectMember, deleteProject, putProjectMembers } from '../../../api/project'
+import { CREATE_PROJECT_FAILURE, CREATE_PROJECT_SUCCESS, DELETE_PROJECT_FAILURE, DELETE_PROJECT_SUCCESS, JOINED_PROJECT_FAILURE, JOINED_PROJECT_SUCCESS, LOAD_PROJECT_FAILURE, LOAD_PROJECT_MEMBERS_FAILURE, LOAD_PROJECT_MEMBERS_SUCCESS, LOAD_PROJECT_SUCCESS, MY_PROJECT_FAILURE, MY_PROJECT_SUCCESS, UPDATE_MEMBERS_FAILURE, UPDATE_MEMBERS_SUCCESS, UPDATE_PROJECT_FAILURE, UPDATE_PROJECT_SUCCESS } from "./projectActionTypes";
+import { postProject, getMyProject as getMyProjectApi, getProjectById, putProject, getProjectMember, deleteProject, putProjectMembers, getMyJoinedProject } from '../../../api/project'
 
 
 export function* createProject({ payload }) {
@@ -30,6 +30,22 @@ export function* getMyProject() {
     } catch (error) {
         yield put({
             type: MY_PROJECT_FAILURE,
+            payload: error
+        })
+    }
+}
+
+export function* getJoinedProject() {
+    try {
+        const res = yield call(getMyJoinedProject)
+
+        yield put({
+            type: JOINED_PROJECT_SUCCESS,
+            payload: res.data
+        })
+    } catch (error) {
+        yield put({
+            type: JOINED_PROJECT_FAILURE,
             payload: error
         })
     }
