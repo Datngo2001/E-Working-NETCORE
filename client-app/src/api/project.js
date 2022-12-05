@@ -8,6 +8,10 @@ export function getMyProject() {
     return api.get("/project/my/all")
 }
 
+export function getMyJoinedProject() {
+    return api.get("/project/joined")
+}
+
 export function getProjectById(id) {
     return api.get(`/project/${id}`)
 }

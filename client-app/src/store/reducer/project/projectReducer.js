@@ -1,4 +1,4 @@
-import { CREATE_PROJECT_FAILURE, CREATE_PROJECT_REQUEST, CREATE_PROJECT_SUCCESS, DELETE_PROJECT_FAILURE, DELETE_PROJECT_REQUEST, DELETE_PROJECT_SUCCESS, LOAD_PROJECT_FAILURE, LOAD_PROJECT_MEMBERS_FAILURE, LOAD_PROJECT_MEMBERS_REQUEST, LOAD_PROJECT_MEMBERS_SUCCESS, LOAD_PROJECT_REQUEST, LOAD_PROJECT_SUCCESS, MY_PROJECT_FAILURE, MY_PROJECT_REQUEST, MY_PROJECT_SUCCESS, SET_CURRENT_PROJECT, UPDATE_MEMBERS_FAILURE, UPDATE_MEMBERS_REQUEST, UPDATE_MEMBERS_SUCCESS, UPDATE_PROJECT_FAILURE, UPDATE_PROJECT_REQUEST, UPDATE_PROJECT_SUCCESS } from "./projectActionTypes";
+import { CREATE_PROJECT_FAILURE, CREATE_PROJECT_REQUEST, CREATE_PROJECT_SUCCESS, DELETE_PROJECT_FAILURE, DELETE_PROJECT_REQUEST, DELETE_PROJECT_SUCCESS, JOINED_PROJECT_FAILURE, JOINED_PROJECT_REQUEST, JOINED_PROJECT_SUCCESS, LOAD_PROJECT_FAILURE, LOAD_PROJECT_MEMBERS_FAILURE, LOAD_PROJECT_MEMBERS_REQUEST, LOAD_PROJECT_MEMBERS_SUCCESS, LOAD_PROJECT_REQUEST, LOAD_PROJECT_SUCCESS, MY_PROJECT_FAILURE, MY_PROJECT_REQUEST, MY_PROJECT_SUCCESS, SET_CURRENT_PROJECT, UPDATE_MEMBERS_FAILURE, UPDATE_MEMBERS_REQUEST, UPDATE_MEMBERS_SUCCESS, UPDATE_PROJECT_FAILURE, UPDATE_PROJECT_REQUEST, UPDATE_PROJECT_SUCCESS } from "./projectActionTypes";
 
 const init = {
     projectList: [],
@@ -20,6 +20,7 @@ export default function projectReducer(state = init, { type, payload }) {
         case MY_PROJECT_REQUEST:
         case DELETE_PROJECT_REQUEST:
         case UPDATE_MEMBERS_REQUEST:
+        case JOINED_PROJECT_REQUEST:
             return {
                 ...state,
                 loading: true,
@@ -35,6 +36,7 @@ export default function projectReducer(state = init, { type, payload }) {
         case MY_PROJECT_FAILURE:
         case DELETE_PROJECT_FAILURE:
         case UPDATE_MEMBERS_FAILURE:
+        case JOINED_PROJECT_FAILURE:
             return {
                 ...state,
                 loading: false,
@@ -54,6 +56,7 @@ export default function projectReducer(state = init, { type, payload }) {
                     message: null
                 }
             }
+        case JOINED_PROJECT_SUCCESS:
         case MY_PROJECT_SUCCESS:
             return {
                 ...state,
@@ -122,9 +125,3 @@ function removeProjectFromStore(projectList, id) {
     projectList.splice(index, 1)
     return projectList
 }
-
-// function updateProjectInStore(projectList, newProject) {
-//     const index = projectList.findIndex(stage => stageid == newProjectid)
-//     projectList[index] = newProject
-//     return projectList
-// }

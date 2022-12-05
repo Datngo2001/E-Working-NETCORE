@@ -1,4 +1,4 @@
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Tab, Tabs } from "@mui/material";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import AppSkeleton from "../../components/AppSkeleton";
 import {
+  JOINED_PROJECT_REQUEST,
   MY_PROJECT_REQUEST,
   SET_CURRENT_PROJECT,
 } from "../../store/reducer/project/projectActionTypes";
@@ -14,11 +15,15 @@ import CreateProjectButton from "./components/CreateProjectButton/CreateProjectB
 import ProjectCard from "./components/ProjectCard/ProjectCard";
 import styles from "./projectList.module.css";
 
+const MINE = 0;
+const JOINED = 1;
+
 function ProjectList() {
   const { projectList } = useSelector((state) => state.project);
   const dispatch = useDispatch();
   const [isShowModal, setShowModal] = useState(false);
   const navigate = useNavigate();
+  const [tab, setTab] = React.useState(0);
 
   const openModal = () => {
     setShowModal(true);
@@ -29,26 +34,44 @@ function ProjectList() {
   };
 
   useEffect(() => {
-    dispatch({
-      type: MY_PROJECT_REQUEST,
-    });
-  }, []);
+    if (tab === MINE) {
+      dispatch({
+        type: MY_PROJECT_REQUEST,
+      });
+    } else if (tab === JOINED) {
+      dispatch({
+        type: JOINED_PROJECT_REQUEST,
+      });
+    }
+  }, [tab]);
 
   const handleCardClick = (id) => {
-    // dispatch({
-    //   type: SET_CURRENT_PROJECT,
-    //   payload: id
-    // });
     navigate(`/console/project/${id}/stage`);
   };
 
   return (
     <div className={styles["container"]}>
-      <h2>Your Project</h2>
+      <h2>Projects List</h2>
+
+      <Box sx={{ borderBottom: 1, borderColor: "divider", marginBottom: 3 }}>
+        <Tabs
+          value={tab}
+          onChange={(event, newValue) => {
+            setTab(newValue);
+          }}
+          aria-label="basic tabs example"
+        >
+          <Tab label="Mine" />
+          <Tab label="Joined" />
+        </Tabs>
+      </Box>
+
       <Grid container spacing={{ xs: 2, md: 3 }} columns={12}>
-        <Grid item xs={12} md={6} lg={4} onClick={openModal}>
-          <CreateProjectButton />
-        </Grid>
+        {tab === MINE && (
+          <Grid item xs={12} md={6} lg={4} onClick={openModal}>
+            <CreateProjectButton />
+          </Grid>
+        )}
         {projectList.map((project, index) => (
           <Grid
             item
@@ -61,7 +84,7 @@ function ProjectList() {
             <ProjectCard name={project.name} />
           </Grid>
         ))}
-        {!projectList ? (
+        {projectList.length === 0 ? (
           <Box sx={{ display: "flex", gap: 1 }}>
             <AppSkeleton />
             <AppSkeleton />
