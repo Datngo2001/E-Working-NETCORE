@@ -1,0 +1,24 @@
+﻿@using IdentityServer.Models.Account
+@model ConfirmEmailViewModel
+@{
+}
+<div>
+    <div class="card m-auto w-25 mb-3 mt-5 ">
+        <div class="card-body">
+            <h2 class="text-center">Confirm Email</h2>
+            <form asp-route="EmailConfirm">
+                <input type="hidden" asp-for="ReturnUrl" />
+                <div class="mb-3">
+                    <label class="form-label" asp-for="Otp"></label>
+                    <input class="form-control form-control-lg text-center" placeholder="Code" asp-for="Otp" autofocus>
+                </div>
+
+                <!-- Submit button -->
+                <button class="btn btn-primary btn-block mb-4 w-100" name="button" value="confirm-email">Confirm</button>
+            </form>
+        </div>
+    </div>
+    <div class="m-auto w-50">
+        <partial name="_ValidationSummary" />
+    </div>
+</div>

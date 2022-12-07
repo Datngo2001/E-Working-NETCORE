@@ -4,6 +4,9 @@ using DataAccess.Entities;
 using IdentityServer4;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using IdentityServer.Options;
+using IdentityServer.Services;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,6 +52,9 @@ builder.Services.AddAuthentication()
         options.ClientId = builder.Configuration.GetValue<string>("GoogleOAuthClientID");
         options.ClientSecret = builder.Configuration.GetValue<string>("GoogleOAuthClientSecret");
     });
+
+builder.Services.AddTransient<IEmailSender, EmailSender>();
+builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
 
 var app = builder.Build();
 

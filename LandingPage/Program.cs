@@ -25,11 +25,11 @@ builder.Services.AddAuthentication(options =>
     .AddCookie("Cookies")
     .AddOpenIdConnect("oidc", options =>
     {
-        options.Authority = builder.Configuration["Oidc.Authority"];
+        options.Authority = builder.Configuration["Authority"];
 
-        options.ClientId = builder.Configuration["Oidc.ClientId"];
-        options.ClientSecret = builder.Configuration["Oidc.ClientSecret"];
-        options.ResponseType = builder.Configuration["Oidc.ResponseType"];
+        options.ClientId = builder.Configuration["ClientId"];
+        options.ClientSecret = builder.Configuration["ClientSecret"];
+        options.ResponseType = builder.Configuration["ResponseType"];
 
         options.SaveTokens = true;
 

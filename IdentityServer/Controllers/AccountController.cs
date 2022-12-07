@@ -17,6 +17,12 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using IdentityServer.Models.Account;
+using SendGrid.Helpers.Mail;
+using SendGrid;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.IdentityModel.Protocols;
+using System.Configuration;
 
 namespace IndetityServer.Controllers
 {
@@ -29,6 +35,8 @@ namespace IndetityServer.Controllers
         private readonly IClientStore clientStore;
         private readonly IAuthenticationSchemeProvider schemeProvider;
         private readonly ApplicationDbContext dbContext;
+        private readonly IEmailSender emailSender;
+        private readonly IConfiguration configuration;
 
         public AccountController(
             ILogger<AccountController> logger,
@@ -37,7 +45,9 @@ namespace IndetityServer.Controllers
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
             IAuthenticationSchemeProvider schemeProvider,
-            ApplicationDbContext dbContext
+            ApplicationDbContext dbContext,
+            IEmailSender emailSender,
+            IConfiguration configuration
            )
         {
             _logger = logger;
@@ -47,6 +57,8 @@ namespace IndetityServer.Controllers
             this.clientStore = clientStore;
             this.schemeProvider = schemeProvider;
             this.dbContext = dbContext;
+            this.emailSender = emailSender;
+            this.configuration = configuration;
         }
 
         [HttpGet]
@@ -199,8 +211,27 @@ namespace IndetityServer.Controllers
                 return View(model);
             }
 
-            await signInManager.SignInAsync(newUser, isPersistent: true);
+            await emailSender.SendEmailAsync("ngominhdat110115@gmail.com", "Confirm Your Email", "Confirm your mail");
 
+            return RedirectToAction("EmailConfirm", new { email = model.Email, returnUrl = model.ReturnUrl });
+        }
+
+        [HttpGet]
+        public IActionResult EmailConfirm(string email, string returnUrl)
+        {
+            var vm = new ConfirmEmailViewModel()
+            {
+                ReturnUrl = returnUrl,
+                Email = email,
+            };
+
+            return View(vm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EmailConfirm(ConfirmEmailViewModel model, string button)
+        {
             var context = await interaction.GetAuthorizationContextAsync(model.ReturnUrl);
             if (context != null)
             {
@@ -226,6 +257,7 @@ namespace IndetityServer.Controllers
                 throw new Exception("invalid return URL");
             }
         }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
