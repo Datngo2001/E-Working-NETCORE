@@ -65,26 +65,6 @@ namespace IdentityServer
                         IdentityServerConstants.StandardScopes.Profile,
                         "API"
                     }
-                },
-                new Client
-                {
-                    ClientId = "TestJSClient",
-                    ClientName = "JavaScript Test Client",
-                    AllowedGrantTypes = GrantTypes.Code,
-                    RequireClientSecret = false,
-
-                    RedirectUris =           { "http://localhost:15000/code-identityserver-sample.html" },
-                    PostLogoutRedirectUris = { "http://localhost:15000/code-identityserver-sample.html" },
-                    AllowedCorsOrigins =     { "http://localhost:15000" },
-
-                    AllowOfflineAccess = true,
-
-                    AllowedScopes =
-                    {
-                        IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile,
-                        "API"
-                    }
                 }
         };
     }
