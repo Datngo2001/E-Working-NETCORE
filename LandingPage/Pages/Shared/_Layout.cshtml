@@ -17,7 +17,7 @@
         <nav
             class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-light border-bottom box-shadow mb-3 static-top">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">E-working</a>
+                <a class="navbar-brand text-primary fw-bolder" asp-area="" asp-page="/Index">E-working</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -35,14 +35,17 @@
                         @if (User.Claims.Count() == 0)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-page="Signin">Signin</a>
+                                <a class="btn btn-outline-primary" asp-page="Signin">Signin</a>
                             </li>
                         }
                         @if (User.Claims.Count() != 0)
                         {
                             <li class="nav-item">
+                                <a class="btn btn-outline-primary me-3" href="http://localhost:3001/">Go to console</a>
+                            </li>
+                            <li class="nav-item">
                                 <div class="dropdown">
-                                    <a class="btn btn-light dropdown-toggle" href="#" role="button" id="userMenuDropDown"
+                                    <a class="btn btn-outline-primary dropdown-toggle" href="#" role="button" id="userMenuDropDown"
                                    data-bs-toggle="dropdown" aria-expanded="false">
                                             @User.Claims.FirstOrDefault(c=>c.Type=="name")?.Value
                                     </a>
