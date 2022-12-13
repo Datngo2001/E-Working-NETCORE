@@ -10,6 +10,8 @@ namespace IdentityServer
 {
     public class Config
     {
+        public static string ClientUrl = "";
+        public static string LandingPageUrl = "";
         public static IEnumerable<IdentityResource> IdentityResources =>
            new IdentityResource[]
            {
@@ -33,9 +35,9 @@ namespace IdentityServer
 
                     AllowedGrantTypes = GrantTypes.Code,
 
-                    RedirectUris = { "https://localhost:7259/signin-oidc" },
-                    FrontChannelLogoutUri = "https://localhost:7259/signout-oidc",
-                    PostLogoutRedirectUris = { "https://localhost:7259/signout-callback-oidc" },
+                    RedirectUris = { $"{LandingPageUrl}/signin-oidc" },
+                    FrontChannelLogoutUri = $"{LandingPageUrl}/signout-oidc",
+                    PostLogoutRedirectUris = { $"{LandingPageUrl}/signout-callback-oidc" },
 
                     AllowOfflineAccess = true,
                     AllowedScopes = {
@@ -51,9 +53,9 @@ namespace IdentityServer
                     AllowedGrantTypes = GrantTypes.Code,
                     RequireClientSecret = false,
 
-                    RedirectUris =           { "http://localhost:3001/" },
-                    PostLogoutRedirectUris = { "http://localhost:3001/" },
-                    AllowedCorsOrigins =     { "http://localhost:3001" },
+                    RedirectUris =           { $"{ClientUrl}/" },
+                    PostLogoutRedirectUris = { $"{ClientUrl}/" },
+                    AllowedCorsOrigins =     { $"{ClientUrl}" },
 
                     AllowOfflineAccess = true,
 

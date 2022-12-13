@@ -16,4 +16,6 @@
     <ProjectReference Include="..\CommonModel\CommonModel.csproj" />
   </ItemGroup>
 
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1development_1json__JsonSchema="https://codemagic.io/codemagic-schema.json" /></VisualStudio></ProjectExtensions>
+
 </Project>
