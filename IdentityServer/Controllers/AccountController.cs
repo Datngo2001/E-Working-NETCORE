@@ -211,9 +211,30 @@ namespace IndetityServer.Controllers
                 return View(model);
             }
 
-            await emailSender.SendEmailAsync("ngominhdat110115@gmail.com", "Confirm Your Email", "Confirm your mail");
+            var context = await interaction.GetAuthorizationContextAsync(model.ReturnUrl);
+            if (context != null)
+            {
+                if (context.IsNativeClient())
+                {
+                    return this.LoadingPage("Redirect", model.ReturnUrl);
+                }
 
-            return RedirectToAction("EmailConfirm", new { email = model.Email, returnUrl = model.ReturnUrl });
+                return Redirect(model.ReturnUrl);
+            }
+
+            // request for a local page
+            if (Url.IsLocalUrl(model.ReturnUrl))
+            {
+                return Redirect(model.ReturnUrl);
+            }
+            else if (string.IsNullOrEmpty(model.ReturnUrl))
+            {
+                return Redirect("~/");
+            }
+            else
+            {
+                throw new Exception("invalid return URL");
+            }
         }
 
         [HttpGet]

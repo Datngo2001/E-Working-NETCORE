@@ -1,10 +1,14 @@
-﻿<!DOCTYPE html>
+﻿@inject IConfiguration Configuration
+@{
+    var clientApp = Configuration.GetValue<string>("ClientAppOrigin");
+}
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - LandingPage</title>
+    <title>@ViewData["Title"] - E-working</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet"
         type="text/css" />
@@ -41,7 +45,7 @@
                         @if (User.Claims.Count() != 0)
                         {
                             <li class="nav-item">
-                                <a class="btn btn-outline-primary me-3" href="http://localhost:3001/">Go to console</a>
+                                <a class="btn btn-outline-primary me-3" href="@clientApp">Go to console</a>
                             </li>
                             <li class="nav-item">
                                 <div class="dropdown">
