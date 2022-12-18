@@ -1,7 +1,7 @@
 import Oidc from "oidc-client"
 
 var config = {
-    authority: "https://identityserver20221213174103.azurewebsites.net/",
+    authority: "https://identity-setver-datngo2001.azurewebsites.net/",
     client_id: "ClientApp",
     redirect_uri: "https://e-working-netcore.web.app/",
     response_type: "code",

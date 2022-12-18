@@ -51,7 +51,7 @@
             {
               "kind": "v12.0",
               "location": "[parameters('resourceLocation')]",
-              "name": "eworking",
+              "name": "e-working-server",
               "type": "Microsoft.Sql/servers",
               "apiVersion": "2017-10-01-preview"
             },
@@ -64,11 +64,11 @@
               },
               "kind": "v12.0,user,vcore,serverless",
               "location": "[parameters('resourceLocation')]",
-              "name": "eworking/e-working",
+              "name": "e-working-server/e-working",
               "type": "Microsoft.Sql/servers/databases",
               "apiVersion": "2017-10-01-preview",
               "dependsOn": [
-                "eworking"
+                "e-working-server"
               ]
             }
           ]
