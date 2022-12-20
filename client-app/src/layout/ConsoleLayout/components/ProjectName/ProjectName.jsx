@@ -22,7 +22,7 @@ function ProjectName() {
       >
         {currentProject?.name}
       </Typography>
-      {currentProject?.creator === user.uid ? (
+      {currentProject?.creator === user.profile.sub ? (
         <IconButton
           onClick={() =>
             navigate(`/console/project/${currentProject?.id}/setting`)
