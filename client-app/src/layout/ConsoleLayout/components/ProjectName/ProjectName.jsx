@@ -9,7 +9,6 @@ function ProjectName() {
   const navigate = useNavigate();
   const { currentProject } = useSelector((state) => state.project);
   const { user } = useSelector((state) => state.user);
-
   return (
     <div className={styles["container"]}>
       <Typography
@@ -22,7 +21,7 @@ function ProjectName() {
       >
         {currentProject?.name}
       </Typography>
-      {currentProject?.creator === user.profile.sub ? (
+      {currentProject?.creatorId === user.profile.sub ? (
         <IconButton
           onClick={() =>
             navigate(`/console/project/${currentProject?.id}/setting`)
