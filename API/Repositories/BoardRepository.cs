@@ -130,7 +130,7 @@ namespace API.Repositories
 
         public async Task<CardDto> MoveCard(MoveCardDto moveCardDto)
         {
-            var card = await dbContext.Cards.FirstAsync(c => c.Id == moveCardDto.CardId);
+            var card = await dbContext.Cards.Include(c => c.AssignTo).FirstAsync(c => c.Id == moveCardDto.CardId);
             var startColumn = await dbContext.Columns.FirstAsync(c => c.Id == moveCardDto.StartColumn);
             var endColumn = await dbContext.Columns.FirstAsync(c => c.Id == moveCardDto.EndColumn);
 

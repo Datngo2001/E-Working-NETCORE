@@ -186,13 +186,20 @@ function removeCard(board, deletedCard) {
 function moveCard(board, newCard) {
     // remove exist card
     board.columns.forEach(col => {
-        let index = col.cards.findIndex(c => c.id === newCard.id)
-        if (index > -1) {
-            col.cards.splice(index, 1)
+        console.log(col.cards)
+        if (col.cards) {
+            let index = col.cards.findIndex(c => c.id === newCard.id)
+            if (index > -1) {
+                col.cards.splice(index, 1)
+            }
         }
     })
     // add card to new column
+
     let column = board.columns.find(c => c.id === newCard.columnId)
+    if (!column.cards) {
+        column.cards = []
+    }
     column.cards.push(newCard)
     return board
 }
