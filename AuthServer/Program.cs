@@ -1,3 +1,4 @@
+using AuthServer;
 using AuthServer.Data;
 using AuthServer.Data.Entities;
 using AuthServer.Singleton;
@@ -37,6 +38,26 @@ builder.Services.AddIdentity<AppUser, AppRole>(options =>
                 .AddEntityFrameworkStores<DataContext>()
                 .AddDefaultTokenProviders();
 
+Config.ClientUrl = builder.Configuration.GetValue<string>("ClientAppOrigin");
+Config.LandingPageUrl = builder.Configuration.GetValue<string>("LandingPageOrigin");
+
+var identityServerBuilder = builder.Services.AddIdentityServer(options =>
+            {
+                options.Events.RaiseErrorEvents = true;
+                options.Events.RaiseInformationEvents = true;
+                options.Events.RaiseFailureEvents = true;
+                options.Events.RaiseSuccessEvents = true;
+
+                options.EmitStaticAudienceClaim = true;
+            })
+                .AddInMemoryIdentityResources(Config.IdentityResources)
+                .AddInMemoryApiScopes(Config.ApiScopes)
+                .AddInMemoryClients(Config.Clients)
+                .AddAspNetIdentity<AppUser>();
+
+builder.Services.AddAuthentication();
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -47,6 +68,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseIdentityServer();
 
 app.UseAuthorization();
 
